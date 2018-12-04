@@ -32,6 +32,10 @@ export class WorkingAreaComponent implements OnInit {
     ctx.arc(x, y, 5, 0, 2 * Math.PI, false);
     ctx.fillStyle = "red";
     ctx.fill();
+
+    // for remove
+    //ctx.clearRect(5, 2 * Math.PI, x, y);
+  
 }
   ngOnInit() {
   }
