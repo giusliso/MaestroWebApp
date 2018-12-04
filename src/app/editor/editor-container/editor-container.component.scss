@@ -1,0 +1,16 @@
+.layout {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    .organizer {
+        width: 20%;
+    }
+    .locator {
+        width: 30%;
+    }
+    .details {
+        width: 50%;
+    }
+}
