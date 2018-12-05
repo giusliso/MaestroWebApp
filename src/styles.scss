@@ -5,3 +5,12 @@ button.calendar, button.calendar:active {
     background-size: 23px;
     background-position: center;
   }
+
+  .workingArea {
+    cursor:crosshair;
+    background:
+      url(./assets/testData/F16_Landmark.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    //background-position: center;
+  }

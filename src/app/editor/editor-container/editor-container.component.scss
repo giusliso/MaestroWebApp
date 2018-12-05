@@ -17,7 +17,7 @@
         border-width: 0px 0px 3px 0px;
         border-color: #9C9999;
         width: 20%;
-        height: 300px;
+        height: 700px;
     }
     .locator {
         height: 470px;
@@ -27,7 +27,11 @@
         width: 40%;
     }
     .details {
+        app-details{
+            height: 100%;
+        }
         width: 40%;
+        height: 700px;
         margin-left: 10px;
         margin-right: 10px;
     }
