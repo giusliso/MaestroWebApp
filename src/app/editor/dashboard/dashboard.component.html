@@ -1,12 +1,11 @@
-<nav class="navbar navbar-light bg-light">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button class="btn btn-dark" [disabled] = 'true'> 
-          Save
-        </button>
-        <button class="btn btn-dark" [disabled] = 'true'> 
-          Revert
-        </button>
+
+<p-toolbar>
+    <div class="ui-toolbar-group-left">
+        <p-button label="Save" [disabled] = true icon="pi pi-check"></p-button>
+        <p-button label="Revert" [disabled] = true ></p-button>
     </div>
-    <app-import></app-import>
-</nav>
+    <div class="ui-toolbar-group-right">
+        <p-button label="Import Landmark" [disabled] = true ></p-button>
+    </div>
+</p-toolbar>
 

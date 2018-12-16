@@ -1,8 +1,13 @@
 
 :host{
-    .btn-group {
-        margin-left: 5px;
-        margin-right: 5px;
+    p-toolbar{
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        p-button {
+            padding-left: 5px;
+        }
     }
 }
 
