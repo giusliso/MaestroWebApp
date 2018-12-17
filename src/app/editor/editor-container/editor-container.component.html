@@ -3,7 +3,7 @@
 </div>
 <div class="left">
     <div class="organizer">
-            <app-organizer></app-organizer>
+            <app-organizer [props] = "organizerProps"></app-organizer>
     </div>
     <div class="navigator">
         <app-navigation-pane></app-navigation-pane>
@@ -13,7 +13,9 @@
     <app-working-area></app-working-area>
 </div>
 <div class="details">
-    <app-details></app-details>
+    <app-details>
+       <ng-content></ng-content>
+    </app-details>
 </div>
 
 

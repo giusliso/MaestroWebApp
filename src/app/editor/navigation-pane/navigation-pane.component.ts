@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-pane',
@@ -10,8 +11,16 @@ import {MenuItem} from 'primeng/api';
 export class NavigationPaneComponent {
   
     items: MenuItem[];
+    constructor(private router: Router){
+
+    }
+
+    onselect(event){
+      console.log("cliccato");
+    }
 
     ngOnInit() {
+      
         this.items = [
             {
               label: 'Scene',
@@ -23,7 +32,10 @@ export class NavigationPaneComponent {
             },
             {
               label: 'Targets',
-              icon: 'pi pi-fw pi-cog'
+              icon: 'pi pi-fw pi-cog',
+              command: (event) => { 
+                this.router.navigateByUrl('target');
+              }
             }
         ];
     }

@@ -1,13 +1,14 @@
 
 :host {
    box-sizing: border-box;
+  
    .left {
         float: left;
         margin-top: 35px;
         width: 20%;
         .organizer{
             clear: both;
-            height: 550px;
+            height: 80vh;
             overflow: scroll;
             }
         .navigator {
@@ -20,7 +21,6 @@
         width: 40%;
     }
     .details {
-        height: 100%;
         margin-top: 30px;
         float: right;
         width: 40%;

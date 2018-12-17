@@ -8,7 +8,11 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
-      "schematics": {},
+      "schematics": {
+        "@ngrx/schematics:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -124,7 +128,45 @@
           }
         }
       }
+    },
+    "projects": {
+      "root": "projects/projects",
+      "sourceRoot": "projects/projects/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/projects/tsconfig.lib.json",
+            "project": "projects/projects/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/projects/src/test.ts",
+            "tsConfig": "projects/projects/tsconfig.spec.json",
+            "karmaConfig": "projects/projects/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/projects/tsconfig.lib.json",
+              "projects/projects/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "MaestroWebApp"
+  "defaultProject": "MaestroWebApp",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
