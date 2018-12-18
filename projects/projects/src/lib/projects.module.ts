@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { ProjectsComponent } from './components/projects.component';
-import { TargetAreaComponent } from './target/containers/target-area/target-area.component';
 import { EditorModule } from 'src/app/editor/editor.module';
-import { TargetDetailsComponent } from './target/containers/target-details/target-details.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TargetModule } from './target/target.module';
 
 @NgModule({
   imports: [
-    EditorModule,
-    SharedModule
+    SharedModule,
+    TargetModule
   ],
-  declarations: [ProjectsComponent, TargetAreaComponent, TargetDetailsComponent],
-  exports: [ProjectsComponent]
+  declarations: [ProjectsComponent],
+  exports: []
 })
 export class ProjectsModule { }

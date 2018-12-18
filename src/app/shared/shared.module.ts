@@ -5,17 +5,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ngfModule } from 'angular-file';
 import { GraphicModule } from '../core';
-
+import { StoreModule } from '@ngrx/store';
+import { RootStoreModule } from '../store/root-store.module';
 @NgModule({
   imports: [
-    BrowserModule, 
-    FormsModule, 
-    ReactiveFormsModule, 
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     ngfModule,
-    GraphicModule
+    GraphicModule,
+    RootStoreModule
   ],
   declarations: [],
-  exports: [ngfModule, GraphicModule, FormsModule]
+  exports: [ngfModule, GraphicModule, FormsModule, RootStoreModule]
 })
 export class SharedModule { }
