@@ -18,6 +18,6 @@ import { RootStoreModule } from '../store/root-store.module';
     RootStoreModule
   ],
   declarations: [],
-  exports: [ngfModule, GraphicModule, FormsModule, RootStoreModule]
+  exports: [ngfModule, GraphicModule, FormsModule, RootStoreModule, ReactiveFormsModule]
 })
 export class SharedModule { }

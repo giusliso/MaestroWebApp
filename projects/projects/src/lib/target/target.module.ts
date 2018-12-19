@@ -7,9 +7,10 @@ import  * as  reducers from './reducers';
 import { EditorModule } from 'src/app/editor/editor.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { WorkingAreaComponent } from './containers/working-area/working-area.component';
+import { TargetSummaryComponent } from './containers/target-summary/target-summary.component';
 
 @NgModule({
-  declarations: [TargetAreaComponent, TargetDetailsComponent, WorkingAreaComponent],
-  imports: [CommonModule, StoreModule.forFeature('target', reducers.reducer), EditorModule, SharedModule]
+  declarations: [TargetAreaComponent, TargetDetailsComponent, WorkingAreaComponent, TargetSummaryComponent],
+  imports: [CommonModule, SharedModule, StoreModule.forFeature('target', reducers.reducer), EditorModule, SharedModule]
 })
 export class TargetModule {}

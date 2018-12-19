@@ -11,10 +11,13 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {ListboxModule} from 'primeng/listbox';
 import {TabViewModule} from 'primeng/tabview';
 import {FileUploadModule} from 'primeng/fileupload';
+import {InputTextModule} from 'primeng/inputtext';
+
 const GraphicModules = [
   AccordionModule,
   MenubarModule,
   ButtonModule,
+  InputTextModule,
   ListboxModule,
   FileUploadModule,
   PanelMenuModule,
