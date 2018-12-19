@@ -5,6 +5,7 @@ export enum LayoutActionTypes {
   OrganizerDataChange = '[Organizer] Data Change',
   AddItem= '[Organizer] Create',
   DeleteItem = '[Organizer] Delete',
+  UpdateItem = '[Organizer] Update',
   ItemSelect = '[Organizer] Select',
   DetailsChange = '[Details] Change',
   DetailsPersist = '[Details] Persist',
@@ -21,6 +22,11 @@ export class DialogOpenedStatusAction implements Action {
 
 export class AddItemAction implements Action {
   readonly type = LayoutActionTypes.AddItem;
+
+  constructor(public payload: { item: any }) {}
+}
+export class UpdateItemAction implements Action {
+  readonly type = LayoutActionTypes.UpdateItem;
 
   constructor(public payload: { item: any }) {}
 }
@@ -66,6 +72,7 @@ export class CurrentAreaAction implements Action {
 export type LayoutActions =
   | DialogOpenedStatusAction
   | AddItemAction
+  | UpdateItemAction
   | DeleteItemAction
   | ItemSelectAction
   | DetailsChangeAction
