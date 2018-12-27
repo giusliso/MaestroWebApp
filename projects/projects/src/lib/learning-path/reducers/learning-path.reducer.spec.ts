@@ -1,6 +1,6 @@
 import { reducer, initialState } from './learning-path.reducer';
 
-describe('LearningPath Reducer', () => {
+describe('learning-path Reducer', () => {
   describe('unknown action', () => {
     it('should return the initial state', () => {
       const action = {} as any;

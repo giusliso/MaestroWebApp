@@ -16,7 +16,7 @@ export class NavigationPaneComponent {
     }
 
     onselect(event){
-      console.log("cliccato");
+
     }
 
     ngOnInit() {
@@ -24,11 +24,24 @@ export class NavigationPaneComponent {
         this.items = [
             {
               label: 'Scene',
-              icon: 'pi pi-fw pi-cog'
+              icon: 'pi pi-fw pi-cog',
+              command: (event) => { 
+                this.router.navigateByUrl('scena');
+              }
             },
             {
+              label: 'Scenario',
+              icon: 'pi pi-fw pi-cog',
+              command: (event) => { 
+                this.router.navigateByUrl('scenario');
+              }
+            },
+           {
               label: 'Learning-Paths',
-              icon: 'pi pi-fw pi-cog'
+              icon: 'pi pi-fw pi-cog',
+              command: (event) => { 
+                this.router.navigateByUrl('learning-path');
+              }
             },
             {
               label: 'Targets',
@@ -36,6 +49,10 @@ export class NavigationPaneComponent {
               command: (event) => { 
                 this.router.navigateByUrl('target');
               }
+            },
+            {
+              label: 'Contents',
+              icon: 'pi pi-fw pi-cog'
             }
         ];
     }

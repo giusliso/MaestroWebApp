@@ -1,13 +1,13 @@
 import { LearningPathModule } from './learning-path.module';
 
 describe('LearningPathModule', () => {
-  let learningPathModule: LearningPathModule;
+  let LearningPathModule: LearningPathModule;
 
   beforeEach(() => {
-    learningPathModule = new LearningPathModule();
+    LearningPathModule = new LearningPathModule();
   });
 
   it('should create an instance', () => {
-    expect(learningPathModule).toBeTruthy();
+    expect(LearningPathModule).toBeTruthy();
   });
 });

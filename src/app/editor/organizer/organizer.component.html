@@ -1,1 +1,2 @@
-<p-listbox [options]="props" [(ngModel)]="selecteditem" optionLabel="value.name" [multiple] = "false"></p-listbox>
+<p-listbox #organizerList [options]="props" [(ngModel)]="selecteditem" optionLabel="value.name" [multiple] = "false"
+ (onChange) = "selectItem($event.value)"></p-listbox>

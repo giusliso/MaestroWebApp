@@ -5,7 +5,7 @@ import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 import { Target } from 'src/app/models';
 import { TargetState } from '../../reducers';
 import { CreateTarget } from '../../actions';
-
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'lib-working-area',
   templateUrl: './working-area.component.html',
@@ -22,10 +22,15 @@ export class WorkingAreaComponent implements OnInit {
     private targetStore: Store<TargetState>
     ) {
     this.layoutStore.pipe(select('layout', 'area'))
-      .subscribe(area => this.isTargetArea = (area === "TARGET"));
+      .subscribe(area => {
+        this.isTargetArea = (area === "TARGET")
+        console.log( this.isTargetArea = (area === "TARGET"));
+      });
    }
 
   getPosition(event){
+    console.log("chiamata");
+
     if(this.isTargetArea) {
       var rect = this.myCanvas.nativeElement.getBoundingClientRect();
       var x = event.clientX - rect.left;

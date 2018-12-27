@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 export enum LearningPathActionTypes {
-  LoadLearningPaths = '[LearningPath] Load LearningPaths'
+  LoadLearningPaths = '[learning-path] Load learning-paths'
 }
 
 export class LoadLearningPaths implements Action {

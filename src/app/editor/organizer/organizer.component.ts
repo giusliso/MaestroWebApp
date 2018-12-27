@@ -1,11 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import { LayoutStoreModule, LayoutStoreActions } from 'src/app/store/layout-store';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 import { Actions, ofType } from '@ngrx/effects';
 import { LayoutActionTypes, AddItemAction, ItemSelectAction, DeleteItemAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-organizer',
   templateUrl: './organizer.component.html',
@@ -14,6 +13,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class OrganizerComponent implements OnInit {
   @Input()
   props: SelectItem[] = [];
+
   selecteditem: any;
 
   private  previoustItemSelected:any;
@@ -53,6 +53,9 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
+  select(item){
+    console.log(item.value);
+  }
   selectItem(itemToSelect:any){
     this.previoustItemSelected = this.selecteditem;
     this.selecteditem = itemToSelect;

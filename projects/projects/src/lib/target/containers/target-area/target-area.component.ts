@@ -7,6 +7,8 @@ import { Target } from 'src/app/models';
 import { TargetState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
 import { CreateTarget, TargetActionTypes } from '../../actions';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'lib-target-area',
   templateUrl: './target-area.component.html',
@@ -14,15 +16,20 @@ import { CreateTarget, TargetActionTypes } from '../../actions';
 })
 export class TargetAreaComponent implements OnInit {
    public organizerProps = [];
+   private _subscriptions: Subscription[] = [];
   constructor(
     private layoutStore: Store<LayoutState>,
     private targetStore: Store<TargetState>,
     private update$: Actions,
     ) {
 
-      this.update$
-        .pipe(ofType(TargetActionTypes.CreateTarget))
-         .subscribe((target:CreateTarget) => this.fillOrganizer(target.payload.target));
+      this.targetStore.pipe(first(), select('target', 'targets'))
+       .subscribe(targets => targets.forEach(
+         (target: Target) => this.organizerProps.push(
+           {label:target.name, value:{id:target, name: target.name}}
+         )
+       ));
+      
    }
 
 
@@ -34,7 +41,16 @@ export class TargetAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._subscriptions.push(
+      this.update$
+      .pipe(ofType(TargetActionTypes.CreateTarget))
+       .subscribe((target:CreateTarget) => this.fillOrganizer(target.payload.target))
+      );
     this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: 'TARGET'}));
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

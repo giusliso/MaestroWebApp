@@ -7,6 +7,8 @@ import { Target } from 'src/app/models';
 import { TargetState } from '../../reducers';
 import { CreateTarget } from '../../actions';
 import { TargetSummaryComponent } from '../target-summary/target-summary.component';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'lib-target-details',
   templateUrl: './target-details.component.html',
@@ -15,13 +17,22 @@ import { TargetSummaryComponent } from '../target-summary/target-summary.compone
 export class TargetDetailsComponent implements OnInit {
   @ViewChild('summaryTab')
   summaryTab: TargetSummaryComponent;
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     private layoutStore: Store<LayoutState>,
     private targetStore: Store<TargetState>,
     private update$: Actions,
   ) {
-      this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
+
+  }
+
+  updateChilds(target){
+    this.summaryTab.fillSummary(target);
+  }
+
+  ngOnInit() {
+    this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
          .subscribe((selection: ItemSelectAction) => {
            console.log(selection.payload.item.value.name);
            this.targetStore.pipe(select('target', 'targets'))
@@ -32,11 +43,8 @@ export class TargetDetailsComponent implements OnInit {
          });
   }
 
-  updateChilds(target){
-    this.summaryTab.fillSummary(target);
-  }
+  ngOnDestroy(){
 
-  ngOnInit() {
   }
 
 }

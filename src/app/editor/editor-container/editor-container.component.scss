@@ -1,17 +1,17 @@
 
 :host {
    box-sizing: border-box;
-  
+   height: 100vh;
    .left {
         float: left;
-        margin-top: 35px;
         width: 20%;
         .organizer{
             clear: both;
-            height: 80vh;
+            height: 62.5vh;
             overflow: scroll;
             }
         .navigator {
+            height: 30vh;
             bottom: 0px;
             clear: both;
         }
@@ -21,8 +21,11 @@
         width: 40%;
     }
     .details {
-        margin-top: 30px;
         float: right;
         width: 40%;
+        ::ng-deep .ui-tabview-panels {
+            height: 87.4vh;
+        } 
     }
+
 }

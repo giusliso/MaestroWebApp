@@ -11,6 +11,6 @@ import { TargetSummaryComponent } from './containers/target-summary/target-summa
 
 @NgModule({
   declarations: [TargetAreaComponent, TargetDetailsComponent, WorkingAreaComponent, TargetSummaryComponent],
-  imports: [CommonModule, SharedModule, StoreModule.forFeature('target', reducers.reducer), EditorModule, SharedModule]
+  imports: [CommonModule, SharedModule, StoreModule.forFeature('target', reducers.reducer), EditorModule]
 })
 export class TargetModule {}
