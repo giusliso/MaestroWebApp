@@ -42,15 +42,15 @@ export class OrganizerComponent implements OnInit {
         }
       );
 
-    this.update$.pipe(ofType(LayoutActionTypes.AddItem))
-    .subscribe(
-      (node: UpdateItemAction) => {
-        const itemToUpdate = this.props.indexOf(this.selecteditem);
-        this.props[itemToUpdate] = node.payload.item;
-        this.props = [...this.props];
-        this.selectItem(node.payload.item)
-      }
-    );
+    // this.update$.pipe(ofType(LayoutActionTypes.AddItem))
+    // .subscribe(
+    //   (node: UpdateItemAction) => {
+    //     const itemToUpdate = this.props.indexOf(this.selecteditem);
+    //     this.props[itemToUpdate] = node.payload.item;
+    //     this.props = [...this.props];
+    //     this.selectItem(node.payload.item)
+    //   }
+    // );
   }
 
   select(item){

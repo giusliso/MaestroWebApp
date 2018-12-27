@@ -6,6 +6,8 @@ import { Target } from 'src/app/models';
 import { TargetState } from '../../reducers';
 import { CreateTarget } from '../../actions';
 import { first } from 'rxjs/operators';
+import { ProjectsService } from '../../../services/projects.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'lib-working-area',
   templateUrl: './working-area.component.html',
@@ -14,22 +16,25 @@ import { first } from 'rxjs/operators';
 export class WorkingAreaComponent implements OnInit {
   @ViewChild('myCanvas') myCanvas;
   public context: CanvasRenderingContext2D;
+  private subscriptions: Subscription[] = [];
   private pointSize = 3;
   private isTargetArea = false;
 
   constructor(
+    private project$ :ProjectsService,
     private layoutStore: Store<LayoutState>,
     private targetStore: Store<TargetState>
     ) {
+     
     this.layoutStore.pipe(select('layout', 'area'))
       .subscribe(area => {
         this.isTargetArea = (area === "TARGET")
         console.log( this.isTargetArea = (area === "TARGET"));
       });
+
    }
 
   getPosition(event){
-    console.log("chiamata");
 
     if(this.isTargetArea) {
       var rect = this.myCanvas.nativeElement.getBoundingClientRect();
@@ -46,7 +51,8 @@ export class WorkingAreaComponent implements OnInit {
     }
    }
 
-   drawCoordinates(x,y){
+  public drawCoordinates(x,y){
+
     var ctx = this.myCanvas.nativeElement.getContext("2d");
 
     ctx.beginPath();
@@ -62,6 +68,12 @@ export class WorkingAreaComponent implements OnInit {
 
 }
   ngOnInit() {
+    this.subscriptions.push(this.targetStore.pipe(first(), select('target', 'targets'))
+     .subscribe(targets => targets.forEach( (target: Target) => this.drawCoordinates(target.position.x, target.position.y))));
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(subsctription => subsctription.unsubscribe());
   }
 
 }
