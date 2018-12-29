@@ -1,10 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import { LayoutStoreModule, LayoutStoreActions } from 'src/app/store/layout-store';
+import {MenuItem} from 'primeng/api';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 import { Actions, ofType } from '@ngrx/effects';
 import { LayoutActionTypes, AddItemAction, ItemSelectAction, DeleteItemAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
+import { ContextMenu } from 'primeng/contextmenu';
+import { forEach } from '@angular/router/src/utils/collection';
 @Component({
   selector: 'app-organizer',
   templateUrl: './organizer.component.html',
@@ -14,8 +17,14 @@ export class OrganizerComponent implements OnInit {
   @Input()
   props: SelectItem[] = [];
 
+  @Input()
+  contextMenuProps: MenuItem[] = [];
   selecteditem: any;
 
+  @ViewChild(ContextMenu)
+  contextMenu: ContextMenu;
+
+  public rightClickedNode;
   private  previoustItemSelected:any;
 
   constructor(
@@ -38,7 +47,10 @@ export class OrganizerComponent implements OnInit {
           const itemToRemove = this.props.indexOf(node.payload.item);
           this.props.splice(itemToRemove,1);
           this.props = [...this.props];
-          this.selectItem(this.previoustItemSelected);
+          if(this.props.length > 0 && this.props.indexOf(this.previoustItemSelected) > -1){
+            this.selectItem(this.previoustItemSelected);
+          }
+         
         }
       );
 
@@ -53,9 +65,18 @@ export class OrganizerComponent implements OnInit {
     // );
   }
 
-  select(item){
-    console.log(item.value);
+  isContextMenuVisible(): boolean {
+    if((this.props === [] || this.props === undefined) ||
+    (this.contextMenuProps === [])){
+      return false
+    }
+    return true;
   }
+
+  select(item){
+    this.selectItem(item.value);
+  }
+
   selectItem(itemToSelect:any){
     this.previoustItemSelected = this.selecteditem;
     this.selecteditem = itemToSelect;

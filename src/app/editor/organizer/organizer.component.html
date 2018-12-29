@@ -1,2 +1,18 @@
-<p-listbox #organizerList [options]="props" [(ngModel)]="selecteditem" optionLabel="value.name" [multiple] = "false"
- (onChange) = "selectItem($event.value)"></p-listbox>
+ <p-listbox [options]="props" [(ngModel)]="selecteditem"
+   [multiple] = "false">
+    <ng-template let-prop let-i="index" pTemplate="item">
+        <div class="ui-helper-clearfix" 
+          [contextMenuSubject]="prop.value"
+          [contextMenu]="organizerMenu">        
+            {{prop.value.name}}        
+        </div>
+    </ng-template>
+  </p-listbox>
+
+ <context-menu #organizerMenu [menuClass]="isContextMenuVisible() ? 'contextMenu' : 'hidden'">
+    <ng-template *ngFor="let action of contextMenuProps" contextMenuItem let-item
+      [visible]="action?.visible" [enabled]="action?.enabled" 
+      (execute)="action?.execute($event)">
+        {{ action?.name }}
+    </ng-template>
+  </context-menu>

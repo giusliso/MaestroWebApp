@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 import { Actions, ofType } from '@ngrx/effects';
 import { LayoutActionTypes, ItemSelectAction } from 'src/app/store/layout-store/actions';
-import { Target } from 'src/app/models';
+import { Target } from '../../../../api';
 import { TargetState } from '../../reducers';
 import { CreateTarget } from '../../actions';
 import { TargetSummaryComponent } from '../target-summary/target-summary.component';

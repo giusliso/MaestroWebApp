@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Target } from 'src/app/models';
+import { Target } from '../../../../api';
 
 @Component({
   selector: 'lib-target-summary',

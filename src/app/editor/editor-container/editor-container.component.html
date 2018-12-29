@@ -1,9 +1,12 @@
+<div class="menu-bar">
+  <app-menu [menuProps] = "menuProps"></app-menu>
+</div>
 <div class="navbar">
   <app-dashboard></app-dashboard>
 </div>
 <div class="left">
     <div class="organizer">
-            <app-organizer [props] = "organizerProps"></app-organizer>
+            <app-organizer [props] = "organizerProps" [contextMenuProps] = "contextMenuProps"></app-organizer>
     </div>
     <div class="navigator">
         <app-navigation-pane></app-navigation-pane>

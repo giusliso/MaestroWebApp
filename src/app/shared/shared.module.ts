@@ -7,6 +7,7 @@ import { ngfModule } from 'angular-file';
 import { GraphicModule } from '../core';
 import { StoreModule } from '@ngrx/store';
 import { RootStoreModule } from '../store/root-store.module';
+import { ContextMenuModule } from 'ngx-contextmenu';
 @NgModule({
   imports: [
     BrowserModule,
@@ -15,9 +16,10 @@ import { RootStoreModule } from '../store/root-store.module';
     HttpClientModule,
     ngfModule,
     GraphicModule,
-    RootStoreModule
+    RootStoreModule,
+    ContextMenuModule.forRoot() 
   ],
   declarations: [],
-  exports: [ngfModule, GraphicModule, FormsModule, RootStoreModule, ReactiveFormsModule]
+  exports: [ngfModule, GraphicModule, FormsModule, RootStoreModule, ReactiveFormsModule, ContextMenuModule ]
 })
 export class SharedModule { }

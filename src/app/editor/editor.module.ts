@@ -8,6 +8,7 @@ import { EditorContainerComponent } from './editor-container/editor-container.co
 import { ImportComponent } from './dashboard/import/import.component';
 import { SharedModule } from '../shared/shared.module';
 import { ProjectsModule } from '../../../projects/projects/src/lib/projects.module';
+import { MenuComponent } from './menu/menu.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,7 +19,7 @@ import { ProjectsModule } from '../../../projects/projects/src/lib/projects.modu
     OrganizerComponent,
     DetailsComponent,
     NavigationPaneComponent,
-    EditorContainerComponent, ImportComponent],
+    EditorContainerComponent, ImportComponent, MenuComponent],
   exports: [
     DashboardComponent,
     OrganizerComponent,

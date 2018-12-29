@@ -2,15 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { LayoutStoreModule, LayoutStoreActions } from 'src/app/store/layout-store';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
-
-import { Target } from 'src/app/models';
+import { Target } from '../../../../api';
 import { TargetState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
-import { CreateTarget, TargetActionTypes } from '../../actions';
+import { CreateTarget, TargetActionTypes, DeleteTarget } from '../../actions';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { WorkingAreaComponent } from '../working-area';
 import { ProjectsService } from '../../../services/projects.service';
+import { DeleteItemAction } from 'src/app/store/layout-store/actions';
 @Component({
   selector: 'lib-target-area',
   templateUrl: './target-area.component.html',
@@ -19,8 +19,19 @@ import { ProjectsService } from '../../../services/projects.service';
 export class TargetAreaComponent implements OnInit {
    @ViewChild(WorkingAreaComponent)
    public workingArea: WorkingAreaComponent;
-
    public organizerProps = [];
+   public menuProps =  
+    [ 
+      { 
+        name: 'Delete Target',
+        visible: (item) => {
+          console.log(item);
+          return true;
+        },
+        enabled: true,
+        execute: (node) => this.clearTarget(node.item)
+      }
+    ];
    private _subscriptions: Subscription[] = [];
   constructor(
     private layoutStore: Store<LayoutState>,
@@ -34,20 +45,30 @@ export class TargetAreaComponent implements OnInit {
        .subscribe(targets => targets.forEach(
          (target: Target) => {
           this.organizerProps.push(
-            {label:target.name, value:{id:target, name: target.name}}  
+            {label:target.name, value:{id:target.targetId, name: target.name}}  
           )
-          console.log(target.position);
           this.project$.drawTarget(target);
          }
        ));
       
    }
 
+  clearTarget (node) {
+    
+    this.targetStore.pipe(first(), select('target', 'targets'))
+     .subscribe((targets: Target[]) => {
+       const target = targets.find(item => item.targetId === node.id);
+       console.log(target);
+       this.project$.removeTarget(target);
+       this.targetStore.dispatch(new DeleteTarget({target: target}))
+       this.layoutStore.dispatch(new DeleteItemAction({item: node}));
+     });
+  }
 
   fillOrganizer(target: Target){
     this.layoutStore.dispatch(
       new LayoutStoreActions.AddItemAction({item:
-        {label:this.organizerProps.length + 1, value:{id:this.organizerProps.length + 1, name: target.name}}})
+        {value:{id:target.targetId, name: target.name}}})
         );
   }
 

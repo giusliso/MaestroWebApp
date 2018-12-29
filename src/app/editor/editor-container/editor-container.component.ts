@@ -10,6 +10,12 @@ export class EditorContainerComponent implements OnInit {
   @Input()
   organizerProps;
 
+  @Input()
+  contextMenuProps;
+
+  @Input()
+  menuProps;
+
   constructor() {
     console.log(this.organizerProps);
    }

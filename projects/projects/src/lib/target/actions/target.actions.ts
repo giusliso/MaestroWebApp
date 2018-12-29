@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { Target } from 'src/app/models';
+import { Target } from '../../../api';
+
 
 export enum TargetActionTypes {
   LoadTargets = '[Target] Load Targets',
@@ -19,6 +20,7 @@ export class CreateTarget implements Action {
 
 export class DeleteTarget implements Action {
   readonly type = TargetActionTypes.DeleteTarget;
+  constructor( public payload: { target: Target}){}
 }
 
 export type TargetActions =

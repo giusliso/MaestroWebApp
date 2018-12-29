@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { TargetActions, TargetActionTypes } from '../actions/target.actions';
-import { Target } from 'src/app/models';
+import { Target } from '../../../api';
 
 export interface TargetState {
   targets: Target[],
@@ -14,20 +14,27 @@ export const initialState: TargetState = {
 };
 
 export function reducer(state = initialState, action: TargetActions): TargetState {
-  switch (action.type) {
 
+  switch (action.type) {
     case TargetActionTypes.LoadTargets:
       return state;
     case TargetActionTypes.CreateTarget:
-      const currentList = state.targets;
+      let currentList = state.targets;
       action.payload.target.name = "New Target " + state.targets.length;
+      action.payload.target.targetId = state.targets.length;
       currentList.push(action.payload.target);
       return {
         ...state,
         targets : currentList
       };
-    case TargetActionTypes.DeleteTarget:
-      return state;
+    case TargetActionTypes.DeleteTarget:  
+      const list = state.targets;
+      console.log(state.targets.indexOf(action.payload.target));
+      list.splice(state.targets.indexOf(action.payload.target),1);
+      return {
+        ...state,
+        targets : list
+      }
 
     default:
       return state;

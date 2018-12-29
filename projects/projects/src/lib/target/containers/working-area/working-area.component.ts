@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
-import { Target } from 'src/app/models';
+import { Target } from '../../../../api';
 import { TargetState } from '../../reducers';
 import { CreateTarget } from '../../actions';
 import { first } from 'rxjs/operators';
@@ -25,12 +25,17 @@ export class WorkingAreaComponent implements OnInit {
     private layoutStore: Store<LayoutState>,
     private targetStore: Store<TargetState>
     ) {
+      
      
     this.layoutStore.pipe(select('layout', 'area'))
       .subscribe(area => {
         this.isTargetArea = (area === "TARGET")
         console.log( this.isTargetArea = (area === "TARGET"));
       });
+    this.project$.removeTargetEvent
+      .subscribe(
+        (target: Target) => this.clearArc(target.coordinateX, target.coordinateY)
+      );
 
    }
 
@@ -42,14 +47,21 @@ export class WorkingAreaComponent implements OnInit {
       var y = event.clientY - rect.top;
       this.drawCoordinates(x,y);
       const newTarget: Target = {
-        position: {
-          x: x,
-          y: y
-        }
+        coordinateX: x,
+        coordinateY: y
       };
      this.targetStore.dispatch(new CreateTarget({ target: newTarget}));
     }
    }
+
+  public clearArc(x,y){
+      var context = this.myCanvas.nativeElement.getContext("2d");
+      const radius = 5;
+      context.beginPath();
+      context.arc(x, y, radius, 0, 2 * Math.PI, false);
+      context.clearRect(x - radius - 1, y - radius - 1,
+                        radius * 2 + 2, radius * 2 + 2);
+  }
 
   public drawCoordinates(x,y){
 
@@ -69,7 +81,7 @@ export class WorkingAreaComponent implements OnInit {
 }
   ngOnInit() {
     this.subscriptions.push(this.targetStore.pipe(first(), select('target', 'targets'))
-     .subscribe(targets => targets.forEach( (target: Target) => this.drawCoordinates(target.position.x, target.position.y))));
+     .subscribe(targets => targets.forEach( (target: Target) => this.drawCoordinates(target.coordinateX, target.coordinateY))));
   }
 
   ngOnDestroy(){
