@@ -11,10 +11,22 @@ import { Actions, ofType } from '@ngrx/effects';
 })
 export class ScenarioAreaComponent implements OnInit {
    public organizerProps = [];
+   public menuProps =  
+   [  
+    {
+      label: 'File',
+      items:[
+        { label: 'New Scenario', 
+          command: () => alert("scena creata")
+        },
+     ]},
+   ];
+
   constructor(
     private layoutStore: Store<LayoutState>,
     private update$: Actions,
     ) {
+      
    }
 
 

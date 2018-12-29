@@ -15,7 +15,7 @@ export class EditorContainerComponent implements OnInit {
 
   @Input()
   menuProps;
-
+  
   constructor() {
     console.log(this.organizerProps);
    }

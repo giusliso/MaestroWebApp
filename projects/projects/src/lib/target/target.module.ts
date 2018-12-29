@@ -13,6 +13,7 @@ import { ProjectsService } from '../services/projects.service';
 @NgModule({
   declarations: [TargetAreaComponent, TargetDetailsComponent, WorkingAreaComponent, TargetSummaryComponent],
   imports: [CommonModule, SharedModule, StoreModule.forFeature('target', reducers.reducer), EditorModule],
-  providers: [ProjectsService]
+  providers: [ProjectsService],
+  exports: [WorkingAreaComponent]
 })
 export class TargetModule {}

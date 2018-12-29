@@ -11,6 +11,17 @@ import { Actions, ofType } from '@ngrx/effects';
 })
 export class LearningPathAreaComponent  implements OnInit {
    public organizerProps = [];
+   public menuProps =  
+   [  
+    {label: 'File',
+     items:[
+        { 
+          label: 'New Learning-Path', 
+          command: () => alert("scena creata")
+        },
+     ]},
+   ];
+
   constructor(
     private layoutStore: Store<LayoutState>,
     private update$: Actions,

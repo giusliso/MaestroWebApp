@@ -1,3 +1,8 @@
-<p>
-  scenario-summary works!
-</p>
+<form [formGroup]="summaryForm">
+    <div class="row">
+        <div class="label">
+           <p > First Name *:</p>
+        </div>
+        <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+    </div>
+</form>

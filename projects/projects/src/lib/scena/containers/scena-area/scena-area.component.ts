@@ -11,12 +11,14 @@ import { Actions, ofType } from '@ngrx/effects';
 })
 export class ScenaAreaComponent implements OnInit {
    public organizerProps = [];
-   public menuProps =  [
-     {label: 'Create New Scene'},
-     {
-       label: 'Delete Scene',
-       visible: (event) => console.log(event)
-      }
+   public menuProps =  
+   [  
+    {label: 'File',
+     items:[
+        { label: 'New Scena', 
+          command: () => alert("scena creata")
+        },
+     ]},
    ];
   constructor(
     private layoutStore: Store<LayoutState>,
