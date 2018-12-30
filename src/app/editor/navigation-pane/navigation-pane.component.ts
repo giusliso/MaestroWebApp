@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import { Router } from '@angular/router';
-
+import { Store, select } from '@ngrx/store';
+import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { Area } from 'src/app/core';
+import { PanelMenu } from 'primeng/panelmenu';
 @Component({
   selector: 'app-navigation-pane',
   templateUrl: './navigation-pane.component.html',
@@ -9,9 +12,14 @@ import { Router } from '@angular/router';
 })
 
 export class NavigationPaneComponent {
-  
-    items: MenuItem[];
-    constructor(private router: Router){
+  @ViewChild('panelMenu')
+  panelMenu: PanelMenu;
+    items;
+    selectedItem;
+    constructor(
+      private router: Router,
+      private layoutStore: Store<LayoutState>,
+      ){
 
     }
 
@@ -24,6 +32,7 @@ export class NavigationPaneComponent {
         this.items = [
             {
               label: 'Scene',
+              type: Area.Scene,
               icon: 'pi pi-fw pi-cog',
               command: (event) => { 
                 this.router.navigateByUrl('scena');
@@ -31,6 +40,7 @@ export class NavigationPaneComponent {
             },
             {
               label: 'Scenario',
+              type: Area.Scenarios,
               icon: 'pi pi-fw pi-cog',
               command: (event) => { 
                 this.router.navigateByUrl('scenario');
@@ -38,6 +48,7 @@ export class NavigationPaneComponent {
             },
            {
               label: 'Learning-Paths',
+              type: Area.LearningPath,
               icon: 'pi pi-fw pi-cog',
               command: (event) => { 
                 this.router.navigateByUrl('learning-path');
@@ -45,6 +56,7 @@ export class NavigationPaneComponent {
             },
             {
               label: 'Targets',
+              type: Area.Target,
               icon: 'pi pi-fw pi-cog',
               command: (event) => { 
                 this.router.navigateByUrl('target');
@@ -52,6 +64,7 @@ export class NavigationPaneComponent {
             },
             {
               label: 'Contents',
+              type: Area.Contents,
               icon: 'pi pi-fw pi-cog'
             }
         ];

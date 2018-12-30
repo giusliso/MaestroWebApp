@@ -8,6 +8,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { LayoutActionTypes, AddItemAction, ItemSelectAction, DeleteItemAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
 import { ContextMenu } from 'primeng/contextmenu';
 import { forEach } from '@angular/router/src/utils/collection';
+import { Listbox } from 'primeng/listbox';
 @Component({
   selector: 'app-organizer',
   templateUrl: './organizer.component.html',
@@ -19,10 +20,13 @@ export class OrganizerComponent implements OnInit {
 
   @Input()
   contextMenuProps: MenuItem[] = [];
-  selecteditem: any;
+  selectedItem: any;
 
   @ViewChild(ContextMenu)
   contextMenu: ContextMenu;
+
+  @ViewChild('organizerList')
+  organizerList: Listbox;
 
   public rightClickedNode;
   private  previoustItemSelected:any;
@@ -44,20 +48,20 @@ export class OrganizerComponent implements OnInit {
       .subscribe(
         (node: DeleteItemAction) => {
 
-          const itemToRemove = this.props.indexOf(node.payload.item);
-          this.props.splice(itemToRemove,1);
+          const itemToRemove = this.props.find( x => x.value.id === node.payload.item.id);
+          this.props.splice( this.props.indexOf(itemToRemove), 1);
           this.props = [...this.props];
+          console.log(this.previoustItemSelected);
           if(this.props.length > 0 && this.props.indexOf(this.previoustItemSelected) > -1){
             this.selectItem(this.previoustItemSelected);
           }
-         
         }
       );
 
     // this.update$.pipe(ofType(LayoutActionTypes.AddItem))
     // .subscribe(
     //   (node: UpdateItemAction) => {
-    //     const itemToUpdate = this.props.indexOf(this.selecteditem);
+    //     const itemToUpdate = this.props.indexOf(this.selectedItem);
     //     this.props[itemToUpdate] = node.payload.item;
     //     this.props = [...this.props];
     //     this.selectItem(node.payload.item)
@@ -78,8 +82,8 @@ export class OrganizerComponent implements OnInit {
   }
 
   selectItem(itemToSelect:any){
-    this.previoustItemSelected = this.selecteditem;
-    this.selecteditem = itemToSelect;
+    this.previoustItemSelected = this.selectedItem;
+    this.selectedItem = this.props[0];
     this.layoutStore.dispatch(new ItemSelectAction({item: itemToSelect}));
   }
 

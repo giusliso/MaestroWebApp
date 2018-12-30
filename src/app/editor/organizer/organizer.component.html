@@ -1,4 +1,4 @@
- <p-listbox [options]="props" [(ngModel)]="selecteditem"
+ <p-listbox #organizerList [options]="props" [(ngModel)]="selectedItem"
    [multiple] = "false">
     <ng-template let-prop let-i="index" pTemplate="item">
         <div class="ui-helper-clearfix" 
@@ -8,7 +8,6 @@
         </div>
     </ng-template>
   </p-listbox>
-
  <context-menu #organizerMenu [menuClass]="isContextMenuVisible() ? 'contextMenu' : 'hidden'">
     <ng-template *ngFor="let action of contextMenuProps" contextMenuItem let-item
       [visible]="action?.visible" [enabled]="action?.enabled" 

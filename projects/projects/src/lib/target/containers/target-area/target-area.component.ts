@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 import { WorkingAreaComponent } from '../working-area';
 import { ProjectsService } from '../../../services/projects.service';
 import { DeleteItemAction } from 'src/app/store/layout-store/actions';
+import { Area } from 'src/app/core';
 @Component({
   selector: 'lib-target-area',
   templateUrl: './target-area.component.html',
@@ -78,7 +79,7 @@ export class TargetAreaComponent implements OnInit {
       .pipe(ofType(TargetActionTypes.CreateTarget))
        .subscribe((target:CreateTarget) => this.fillOrganizer(target.payload.target))
       );
-    this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: 'TARGET'}));
+    this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: Area.Target}));
   }
 
   ngOnDestroy() {

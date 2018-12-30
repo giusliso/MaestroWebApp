@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Area } from 'src/app/core';
 
 export enum LayoutActionTypes {
   DialogOpenedStatus = '[Dialog] Dialog Opened Status',
@@ -66,7 +67,7 @@ export class NavigationBackAction implements Action {
 
 export class CurrentAreaAction implements Action {
   readonly type = LayoutActionTypes.CurrentArea;
-  constructor(public payload: { area: any }) {}
+  constructor(public payload: { area: Area }) {}
 }
 
 export type LayoutActions =

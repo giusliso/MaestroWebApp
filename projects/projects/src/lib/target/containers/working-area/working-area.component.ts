@@ -8,6 +8,7 @@ import { CreateTarget } from '../../actions';
 import { first } from 'rxjs/operators';
 import { ProjectsService } from '../../../services/projects.service';
 import { Subscription } from 'rxjs';
+import { Area } from 'src/app/core';
 @Component({
   selector: 'lib-working-area',
   templateUrl: './working-area.component.html',
@@ -29,8 +30,7 @@ export class WorkingAreaComponent implements OnInit {
      
     this.layoutStore.pipe(select('layout', 'area'))
       .subscribe(area => {
-        this.isTargetArea = (area === "TARGET")
-        console.log( this.isTargetArea = (area === "TARGET"));
+        this.isTargetArea = (area === Area.Target)
       });
     this.project$.removeTargetEvent
       .subscribe(

@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 
 import { Actions, ofType } from '@ngrx/effects';
+import { Area } from 'src/app/core';
 @Component({
   selector: 'lib-scena-area',
   templateUrl: './scena-area.component.html',
@@ -29,7 +30,7 @@ export class ScenaAreaComponent implements OnInit {
 
 
   ngOnInit() {
-    this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: 'SCENA'}));
+    this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: Area.Scene}));
   }
 
 }
