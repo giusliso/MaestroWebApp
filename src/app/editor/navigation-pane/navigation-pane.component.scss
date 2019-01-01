@@ -1,0 +1,16 @@
+:host {
+    p-listbox {
+        ::ng-deep .ui-listbox {
+            width: 100%;
+            border: none;
+        }
+        ::ng-deep .ui-listbox-list {
+            background-color: #DCDBDB;
+           
+        }
+        .navigatorItem {
+            color: #363f45;
+        }
+       
+    }
+}

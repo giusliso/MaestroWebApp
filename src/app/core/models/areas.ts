@@ -6,9 +6,9 @@ export type Area =
   | 'Contents';
 
 export const Area = {
-    Scene: 'SystemAdministrator' as Area,
-    Scenarios: 'NetworkManager' as Area,
-    LearningPath: 'GroupManager' as Area,
-    Target: 'InstrumentUser' as Area,
-    Contents: 'UnassignedUser' as Area
+    Scene: 'Scene' as Area,
+    Scenarios: 'Scenarios' as Area,
+    LearningPath: 'LearningPath' as Area,
+    Target: 'Target' as Area,
+    Contents: 'Contents' as Area
 };

@@ -10,6 +10,7 @@ export interface State {
   locatorProps;
   dataIsPersistent;
   area;
+  currentScene;
 }
 
 export const initialState = {
@@ -21,7 +22,8 @@ export const initialState = {
   locatorData: undefined,
   locatorProps: undefined,
   dataIsPersistent: true,
-  area: undefined
+  area: undefined,
+  currentScene: undefined
 };
 
 export function reducer(state = initialState, action: LayoutActions): State {
@@ -29,19 +31,17 @@ export function reducer(state = initialState, action: LayoutActions): State {
     case LayoutActionTypes.ItemSelect: {
       return {
         ...state,
-        organizerSelection: action.payload.item
+        organizerSelection: action.payload.item,
       };
     }
     case LayoutActionTypes.AddItem: {
       return {
-        ...state,
-        organizerSelection: action.payload.item
+        ...state
       };
     }
     case LayoutActionTypes.DeleteItem: {
       return {
-        ...state,
-        organizerSelection: action.payload.item
+        ...state
       };
     }
     case LayoutActionTypes.DetailsChange: {
@@ -60,6 +60,12 @@ export function reducer(state = initialState, action: LayoutActions): State {
       return {
         ...state,
         area: action.payload.area
+      };
+    }
+    case LayoutActionTypes.CurrentScene: {
+      return {
+        ...state,
+        currentScene: action.payload.item
       };
     }
     default: {

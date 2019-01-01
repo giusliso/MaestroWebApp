@@ -29,7 +29,6 @@ export function reducer(state = initialState, action: TargetActions): TargetStat
       };
     case TargetActionTypes.DeleteTarget:  
       const list = state.targets;
-      console.log(state.targets.indexOf(action.payload.target));
       list.splice(state.targets.indexOf(action.payload.target),1);
       return {
         ...state,

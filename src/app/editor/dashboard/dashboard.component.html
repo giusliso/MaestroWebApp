@@ -1,11 +1,11 @@
 
 <p-toolbar>
     <div class="ui-toolbar-group-left">
-        <p-button label="Save" [disabled] = true icon="pi pi-save"></p-button>
-        <p-button label="Revert" [disabled] = true icon = "pi pi-replay"></p-button>
+        <p-button label="Save" [disabled] = "saveStatus" icon="pi pi-save" (onClick)="onSave($event)"></p-button>
+        <p-button label="Revert" [disabled] = "revertStatus" icon = "pi pi-replay" (onClick)="onRevert($event)"></p-button>
     </div>
     <div class="ui-toolbar-group-right">
-        <p-button label="Import Landmark" [disabled] = true icon = "pi pi-plus-circle"></p-button>
+        <p-button label="Import Landmark" [disabled] = "revertStatus" icon = "pi pi-plus-circle" ></p-button>
     </div>
 </p-toolbar>
 

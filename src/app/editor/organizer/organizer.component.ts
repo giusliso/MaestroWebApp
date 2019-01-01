@@ -9,6 +9,8 @@ import { LayoutActionTypes, AddItemAction, ItemSelectAction, DeleteItemAction, U
 import { ContextMenu } from 'primeng/contextmenu';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Listbox } from 'primeng/listbox';
+import { IfStmt } from '@angular/compiler';
+import { EditorService } from '../services/editor.service';
 @Component({
   selector: 'app-organizer',
   templateUrl: './organizer.component.html',
@@ -34,13 +36,14 @@ export class OrganizerComponent implements OnInit {
   constructor(
     private layoutStore: Store<LayoutState>,
     private update$: Actions,
+    private editor$: EditorService
   ) {
     this.update$.pipe(ofType(LayoutActionTypes.AddItem))
       .subscribe(
         (node: AddItemAction) => {
           this.props.push(node.payload.item);
           this.props = [...this.props];
-          this.selectItem(node.payload.item)
+          this.selectItem(this.props[this.props.length-1]);
         }
       );
 
@@ -49,12 +52,12 @@ export class OrganizerComponent implements OnInit {
         (node: DeleteItemAction) => {
 
           const itemToRemove = this.props.find( x => x.value.id === node.payload.item.id);
-          this.props.splice( this.props.indexOf(itemToRemove), 1);
+          const idxItemToRemove = this.props.indexOf(itemToRemove);
+          this.props.splice(idxItemToRemove, 1);
           this.props = [...this.props];
-          console.log(this.previoustItemSelected);
-          if(this.props.length > 0 && this.props.indexOf(this.previoustItemSelected) > -1){
-            this.selectItem(this.previoustItemSelected);
-          }
+          if(this.props.length > 0){
+            this.selectItem(this.props[idxItemToRemove - 1]);
+          }   
         }
       );
 
@@ -72,13 +75,13 @@ export class OrganizerComponent implements OnInit {
   isContextMenuVisible(): boolean {
     if((this.props === [] || this.props === undefined) ||
     (this.contextMenuProps === [])){
-      return false
+      return false;
     }
     return true;
   }
 
   select(item){
-    this.selectItem(item.value);
+    this.editor$.tryNavigate(this.selectItem(item));
   }
 
   selectItem(itemToSelect:any){

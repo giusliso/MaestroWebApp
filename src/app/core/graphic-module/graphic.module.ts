@@ -13,11 +13,12 @@ import {TabViewModule} from 'primeng/tabview';
 import {FileUploadModule} from 'primeng/fileupload';
 import {InputTextModule} from 'primeng/inputtext';
 import {MegaMenuModule} from 'primeng/megamenu';
-
+import {DialogModule} from 'primeng/dialog';
 const GraphicModules = [
   AccordionModule,
   MenubarModule,
   ButtonModule,
+  DialogModule,
   MegaMenuModule,
   InputTextModule,
   ListboxModule,

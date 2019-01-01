@@ -6,13 +6,15 @@ import { ScenaSummaryComponent } from './containers/scena-summary/scena-summary.
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EditorModule } from 'src/app/editor/editor.module';
 import { TargetModule } from '../target';
-
+import { StoreModule } from '@ngrx/store';
+import  * as  reducers from './reducers';
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     EditorModule,
-    TargetModule
+    TargetModule,
+    StoreModule.forFeature('scene', reducers.reducer)
   ],
   declarations: [ScenaAreaComponent, ScenaDetailsComponent, ScenaSummaryComponent]
 })

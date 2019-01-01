@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
-import { Target } from '../../../../api';
+import { Target, Scene } from '../../../../api';
 import { TargetState } from '../../reducers';
 import { CreateTarget } from '../../actions';
 import { first } from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class WorkingAreaComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private pointSize = 3;
   private isTargetArea = false;
+  private currentScene;
 
   constructor(
     private project$ :ProjectsService,
@@ -46,11 +47,18 @@ export class WorkingAreaComponent implements OnInit {
       var x = event.clientX - rect.left;
       var y = event.clientY - rect.top;
       this.drawCoordinates(x,y);
-      const newTarget: Target = {
-        coordinateX: x,
-        coordinateY: y
-      };
-     this.targetStore.dispatch(new CreateTarget({ target: newTarget}));
+     
+     this.layoutStore.pipe(first(), select('layout', 'currentScene'))
+       .subscribe( sceneArea => {
+        const newTarget: Target = {
+          coordinateX: x,
+          coordinateY: y,
+          sceneId : sceneArea.value.id
+        };
+
+        this.targetStore.dispatch(new CreateTarget({ target: newTarget}))
+       });
+     
     }
    }
 
@@ -80,12 +88,20 @@ export class WorkingAreaComponent implements OnInit {
 
 }
   ngOnInit() {
+    this.layoutStore.pipe(first(), select('layout', 'currentScene'))
+      .subscribe(scene => this.currentScene = scene);
     this.subscriptions.push(this.targetStore.pipe(first(), select('target', 'targets'))
-     .subscribe(targets => targets.forEach( (target: Target) => this.drawCoordinates(target.coordinateX, target.coordinateY))));
+     .subscribe((targets: Target[]) => 
+      targets
+      .filter( target => target.sceneId === this.currentScene.value.id)
+      .forEach( 
+        (target: Target) => this.drawCoordinates(target.coordinateX, target.coordinateY)
+        )));
   }
 
   ngOnDestroy(){
     this.subscriptions.forEach(subsctription => subsctription.unsubscribe());
+
   }
 
 }

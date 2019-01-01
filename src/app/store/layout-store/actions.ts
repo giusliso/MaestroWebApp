@@ -12,7 +12,8 @@ export enum LayoutActionTypes {
   DetailsPersist = '[Details] Persist',
   NavigationDenied = '[Navigation] Denied',
   NavigationBack = '[Navigation] Denied Cancellation',
-  CurrentArea = '[Navigation] Current Area'
+  CurrentArea = '[Navigation] Current Area',
+  CurrentScene = '[Navigation] Current Scene'
 }
 
 export class DialogOpenedStatusAction implements Action {
@@ -70,6 +71,13 @@ export class CurrentAreaAction implements Action {
   constructor(public payload: { area: Area }) {}
 }
 
+
+export class CurrentSceneAction implements Action {
+  readonly type = LayoutActionTypes.CurrentScene;
+
+  constructor(public payload: { item: any }) {}
+}
+
 export type LayoutActions =
   | DialogOpenedStatusAction
   | AddItemAction
@@ -80,4 +88,5 @@ export type LayoutActions =
   | DetailsPersistAction
   | NavigationDeniedAction
   | NavigationBackAction
-  | CurrentAreaAction;
+  | CurrentAreaAction
+  | CurrentSceneAction;

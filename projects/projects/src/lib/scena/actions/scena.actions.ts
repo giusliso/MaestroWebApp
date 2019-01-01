@@ -1,11 +1,29 @@
 import { Action } from '@ngrx/store';
+import { Scene } from '../../../api';
 
-export enum ScenaActionTypes {
-  LoadScenas = '[Scena] Load Scenas'
+
+export enum SceneActionTypes {
+  LoadScenes = '[Scene] Load Scenes',
+  CreateScene = '[Scene] Create Scene',
+  DeleteScene = '[Scene] Delete Scene'
 }
 
-export class LoadScenas implements Action {
-  readonly type = ScenaActionTypes.LoadScenas;
+
+export class LoadScenes implements Action {
+  readonly type = SceneActionTypes.LoadScenes;
 }
 
-export type ScenaActions = LoadScenas;
+export class CreateScene implements Action {
+  readonly type = SceneActionTypes.CreateScene;
+  constructor( public payload: { scene: Scene}){}
+}
+
+export class DeleteScene implements Action {
+  readonly type = SceneActionTypes.DeleteScene;
+  constructor( public payload: { scene: Scene}){}
+}
+
+export type SceneActions =
+  LoadScenes |
+  CreateScene |
+  DeleteScene;

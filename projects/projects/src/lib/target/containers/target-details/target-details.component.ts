@@ -32,15 +32,7 @@ export class TargetDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
-         .subscribe((selection: ItemSelectAction) => {
-           console.log(selection.payload.item.value.name);
-           this.targetStore.pipe(select('target', 'targets'))
-             .subscribe((targets: Target[]) => {
-                const target = targets.find(target => target.name === selection.payload.item.value.name);
-                this.updateChilds(target);
-             });
-         });
+  
   }
 
   ngOnDestroy(){

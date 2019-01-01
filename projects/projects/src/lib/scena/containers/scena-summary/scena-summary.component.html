@@ -1,8 +1,13 @@
-<form [formGroup]="summaryForm">
+<form [formGroup]="summaryForm" >
     <div class="row">
         <div class="label">
-           <p > First Name *:</p>
+           <p > Name *:</p>
         </div>
         <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+        <div class="label">
+            <p > Description *:</p>
+         </div>
+         <textarea pInputTextarea formControlName="description" ></textarea>
+
     </div>
 </form>

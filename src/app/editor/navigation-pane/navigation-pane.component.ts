@@ -5,6 +5,8 @@ import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 import { Area } from 'src/app/core';
 import { PanelMenu } from 'primeng/panelmenu';
+import { Listbox } from 'primeng/listbox';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-navigation-pane',
   templateUrl: './navigation-pane.component.html',
@@ -13,18 +15,31 @@ import { PanelMenu } from 'primeng/panelmenu';
 
 export class NavigationPaneComponent {
   @ViewChild('panelMenu')
-  panelMenu: PanelMenu;
-    items;
-    selectedItem;
+  panelMenu: Listbox;
+  items;
+  selectedItem;
     constructor(
       private router: Router,
       private layoutStore: Store<LayoutState>,
       ){
-
+ 
     }
 
-    onselect(event){
-
+    select(event){
+      switch(event.type){
+        case Area.Scene:
+          this.router.navigateByUrl('scena');
+        break;
+        case Area.Scenarios:
+          this.router.navigateByUrl('scenario');
+        break;
+        case Area.LearningPath:
+          this.router.navigateByUrl('learning-path'); 
+        break;
+        case Area.Target:
+          this.router.navigateByUrl('target');
+        break;
+      }
     }
 
     ngOnInit() {
@@ -33,40 +48,30 @@ export class NavigationPaneComponent {
             {
               label: 'Scene',
               type: Area.Scene,
-              icon: 'pi pi-fw pi-cog',
-              command: (event) => { 
-                this.router.navigateByUrl('scena');
-              }
             },
             {
               label: 'Scenario',
               type: Area.Scenarios,
-              icon: 'pi pi-fw pi-cog',
-              command: (event) => { 
-                this.router.navigateByUrl('scenario');
-              }
             },
            {
               label: 'Learning-Paths',
               type: Area.LearningPath,
-              icon: 'pi pi-fw pi-cog',
-              command: (event) => { 
-                this.router.navigateByUrl('learning-path');
-              }
+
             },
             {
               label: 'Targets',
               type: Area.Target,
-              icon: 'pi pi-fw pi-cog',
-              command: (event) => { 
-                this.router.navigateByUrl('target');
-              }
+
             },
             {
               label: 'Contents',
-              type: Area.Contents,
-              icon: 'pi pi-fw pi-cog'
+              type: Area.Contents
             }
         ];
+        this.layoutStore.pipe(first(), select('layout', 'area'))
+          .subscribe(area => {   
+            console.log(area);
+            this.selectedItem = this.items.find(x => x.type === area);
+          })
     }
 }

@@ -2,7 +2,7 @@
   <app-menu [menuProps] = "menuProps"></app-menu>
 </div>
 <div class="navbar">
-  <app-dashboard></app-dashboard>
+  <app-dashboard (save)="onSave($event)" (revert)="onRevert($event)"></app-dashboard>
 </div>
 <div class="left">
     <div class="organizer">
@@ -20,6 +20,13 @@
        <ng-content></ng-content>
     </app-details>
 </div>
+<p-dialog header="Error" [(visible)]="displayDialog" [modal]="true" [responsive]="false" [minY]="70" 
+        [maximizable]="false" [baseZIndex]="10000" [closable] = "false">
+    <span>{{TextDialog}}</span>
+        <p-footer>
+                <button type="button" pButton (click)="displayDialog=false" label="Ok"></button>
+        </p-footer>
+</p-dialog>
 
 
 

@@ -7,11 +7,12 @@ import { TargetState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
 import { CreateTarget, TargetActionTypes, DeleteTarget } from '../../actions';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, filter } from 'rxjs/operators';
 import { WorkingAreaComponent } from '../working-area';
 import { ProjectsService } from '../../../services/projects.service';
-import { DeleteItemAction } from 'src/app/store/layout-store/actions';
+import { DeleteItemAction, LayoutActionTypes, ItemSelectAction } from 'src/app/store/layout-store/actions';
 import { Area } from 'src/app/core';
+import { TargetDetailsComponent } from '../target-details';
 @Component({
   selector: 'lib-target-area',
   templateUrl: './target-area.component.html',
@@ -20,6 +21,10 @@ import { Area } from 'src/app/core';
 export class TargetAreaComponent implements OnInit {
    @ViewChild(WorkingAreaComponent)
    public workingArea: WorkingAreaComponent;
+
+   @ViewChild(TargetDetailsComponent)
+   public detailsArea: TargetDetailsComponent;
+
    public organizerProps = [];
    public menuProps =  
     [ 
@@ -34,21 +39,25 @@ export class TargetAreaComponent implements OnInit {
       }
     ];
    private _subscriptions: Subscription[] = [];
+   private currentScene; 
   constructor(
     private layoutStore: Store<LayoutState>,
     private targetStore: Store<TargetState>,
     private update$: Actions,
     private project$: ProjectsService
     ) {
-
-      console.log(this.workingArea);
-      this.targetStore.pipe(first(), select('target', 'targets'))
-       .subscribe(targets => targets.forEach(
-         (target: Target) => {
-          this.organizerProps.push(
-            {label:target.name, value:{id:target.targetId, name: target.name}}  
-          )
-          this.project$.drawTarget(target);
+      this.layoutStore.pipe(first(), select('layout', 'currentScene'))
+        .subscribe(scene => this.currentScene = scene);
+      this.targetStore.pipe(
+        first(), 
+        select('target', 'targets'))
+         .subscribe(targets => targets
+         .filter( target => target.sceneId === this.currentScene.value.id)
+         .forEach(
+          (target: Target) => {
+            this.organizerProps.push(
+              {value:{id:target.targetId, name: target.name}}  
+            )
          }
        ));
       
@@ -59,7 +68,6 @@ export class TargetAreaComponent implements OnInit {
     this.targetStore.pipe(first(), select('target', 'targets'))
      .subscribe((targets: Target[]) => {
        const target = targets.find(item => item.targetId === node.id);
-       console.log(target);
        this.project$.removeTarget(target);
        this.targetStore.dispatch(new DeleteTarget({target: target}))
        this.layoutStore.dispatch(new DeleteItemAction({item: node}));
@@ -79,6 +87,16 @@ export class TargetAreaComponent implements OnInit {
       .pipe(ofType(TargetActionTypes.CreateTarget))
        .subscribe((target:CreateTarget) => this.fillOrganizer(target.payload.target))
       );
+    this._subscriptions.push(
+      this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
+      .subscribe((selection: ItemSelectAction) => {
+        this.targetStore.pipe(select('target', 'targets'))
+          .subscribe((targets: Target[]) => {
+             const target = targets.find(target => target.name === selection.payload.item.value.name);
+             this.detailsArea.updateChilds(target);
+          });
+      })
+    );
     this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: Area.Target}));
   }
 

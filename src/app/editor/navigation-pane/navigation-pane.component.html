@@ -1,1 +1,2 @@
-<p-panelMenu  #panelMenu [model]="items" [multiple] = "false"></p-panelMenu>
+
+ <p-listbox [options]="items" [(ngModel)]="selectedItem" optionLabel="label" (onChange) = "select($event.value)"></p-listbox>
