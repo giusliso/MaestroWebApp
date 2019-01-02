@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { scenarioActionTypes } from '../actions/scenario.actions';
+import { ScenarioActionTypes } from '../actions/scenario.actions';
 
 @Injectable()
 export class scenarioEffects {
 
   @Effect()
-  loadFoos$ = this.actions$.pipe(ofType(scenarioActionTypes.Loadscenarios));
+  loadFoos$ = this.actions$.pipe(ofType(ScenarioActionTypes.CreateScenario));
 
   constructor(private actions$: Actions) {}
 }

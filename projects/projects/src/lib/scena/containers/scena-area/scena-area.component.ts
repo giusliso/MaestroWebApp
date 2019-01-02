@@ -7,7 +7,6 @@ import { SceneState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
 import { Area } from 'src/app/core';
 import { CreateScene, SceneActionTypes, UpdateScene, DeleteScene } from '../../actions';
-import { scenarioActionTypes } from '../../../scenario';
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ScenaDetailsComponent } from '../scena-details';

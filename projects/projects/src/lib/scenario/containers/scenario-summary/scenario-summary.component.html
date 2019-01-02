@@ -1,8 +1,20 @@
-<form [formGroup]="summaryForm">
-    <div class="row">
-        <div class="label">
-           <p > First Name *:</p>
+<form [formGroup]="summaryForm" >
+        <div class="row">
+            <div class="label">
+               <p > Name *:</p>
+            </div>
+            <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+            <div class="label">
+                <p > Description *:</p>
+             </div>
+             <textarea pInputTextarea formControlName="description" ></textarea>
+    
         </div>
-        <input id="input" type="text" pInputText formControlName="name" maxlength="20">
-    </div>
-</form>
+    </form>
+    <p-dialog #errorDialog header="Error" [(visible)]="displayErrorDialog" [modal]="true" [responsive]="false" [minY]="70" 
+            [maximizable]="false" [baseZIndex]="10000" [closable] = "false">
+        <span>{{TextErrorDialog}}</span>
+            <p-footer>
+                    <button type="button" pButton (click)="displayErrorDialog=false" label="Ok"></button>
+            </p-footer>
+    </p-dialog>

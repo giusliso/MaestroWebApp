@@ -6,14 +6,17 @@ import { ScenarioSummaryComponent } from './containers/scenario-summary/scenario
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EditorModule } from 'src/app/editor/editor.module';
 import { TargetModule } from '../target';
-
+import { ScenarioCreateDialogComponent } from './containers';
+import { StoreModule } from '@ngrx/store';
+import  * as  reducers from './reducers';
 @NgModule({
   imports: [
     CommonModule,
     EditorModule,
     SharedModule,
-    TargetModule
+    TargetModule,
+    StoreModule.forFeature('scenario', reducers.reducer)
   ],
-  declarations: [ScenarioAreaComponent, ScenarioDetailsComponent, ScenarioSummaryComponent]
+  declarations: [ScenarioAreaComponent, ScenarioDetailsComponent, ScenarioSummaryComponent, ScenarioCreateDialogComponent]
 })
 export class ScenarioModule { }

@@ -71,8 +71,10 @@ export class OrganizerComponent implements OnInit {
     this.update$.pipe(ofType(LayoutActionTypes.UpdateItem))
     .subscribe(
       (node: UpdateItemAction) => {
-        const itemToUpdate = this.props.indexOf(this.selectedItem);
-        this.props[itemToUpdate] = node.payload.item;
+        console.log(this.props);
+        const itemToUpdate = this.props.find( x => x.value.id === node.payload.item.value.id);
+        const idxItemToUpdate = this.props.indexOf(itemToUpdate);
+        this.props[idxItemToUpdate] = node.payload.item;
         this.props = [...this.props];
         this.selectItem(node.payload.item)
       }

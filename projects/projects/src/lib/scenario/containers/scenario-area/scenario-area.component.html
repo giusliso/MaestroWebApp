@@ -1,4 +1,10 @@
-<app-editor-container [organizerProps] = "organizerProps" [menuProps] = "menuProps">
-    <lib-working-area ></lib-working-area>
+<app-editor-container [organizerProps] = "organizerProps" [menuProps] = "menuProps"    
+[contextMenuProps] = "contextMenu"
+(save)="save($event)"
+(revert)="revert($event)"
+>
+  <lib-working-area ></lib-working-area>
   <lib-scenario-details></lib-scenario-details>
 </app-editor-container>
+
+<lib-scenario-create-dialog></lib-scenario-create-dialog>

@@ -1,11 +1,35 @@
 import { Action } from '@ngrx/store';
+import { Scenario } from '../../../api';
 
-export enum scenarioActionTypes {
-  Loadscenarios = '[scenario] Load scenarios'
+
+export enum ScenarioActionTypes {
+  LoadScenarios = '[Scenario] Load Scenarios',
+  CreateScenario = '[Scenario] Create Scenario',
+  UpdateScenario = '[Scenario] Update Scenario',
+  DeleteScenario = '[Scenario] Delete Scenario'
 }
 
-export class Loadscenarios implements Action {
-  readonly type = scenarioActionTypes.Loadscenarios;
+
+export class LoadScenarios implements Action {
+  readonly type = ScenarioActionTypes.LoadScenarios;
 }
 
-export type scenarioActions = Loadscenarios;
+export class CreateScenario implements Action {
+  readonly type = ScenarioActionTypes.CreateScenario;
+  constructor( public payload: { Scenario: Scenario}){}
+}
+
+export class UpdateScenario implements Action {
+  readonly type = ScenarioActionTypes.UpdateScenario;
+  constructor( public payload: { Scenario: Scenario}){}
+}
+export class DeleteScenario implements Action {
+  readonly type = ScenarioActionTypes.DeleteScenario;
+  constructor( public payload: { Scenario: Scenario}){}
+}
+
+export type ScenarioActions =
+  LoadScenarios |
+  CreateScenario |
+  UpdateScenario |
+  DeleteScenario;
