@@ -18,7 +18,8 @@ import { EditorService } from '../services/editor.service';
 })
 export class OrganizerComponent implements OnInit {
   @Input()
-  props: SelectItem[] = [];
+  props: SelectItem[];
+
 
   @Input()
   contextMenuProps: MenuItem[] = [];
@@ -86,11 +87,14 @@ export class OrganizerComponent implements OnInit {
 
   selectItem(itemToSelect:any){
     this.previoustItemSelected = this.selectedItem;
-    this.selectedItem = this.props[0];
+    this.selectedItem = itemToSelect.value;
     this.layoutStore.dispatch(new ItemSelectAction({item: itemToSelect}));
   }
 
   ngOnInit() {
+    if(this.props.length > 0){
+      this.selectItem(this.props[0]);
+    }
   }
 
 }
