@@ -36,8 +36,7 @@ export class WorkingAreaComponent implements OnInit {
     // Load landmark of selected scene in working area.
     this.update$.pipe(ofType(LayoutActionTypes.LandMarkSet))
         .subscribe((item : LandMarkSetAction) => {
-          const file: File = item.payload.landmark;
-          this.setLandMark(file);     
+          this.setLandMark(item.payload.landmark);     
         }
     );
 
@@ -148,7 +147,14 @@ export class WorkingAreaComponent implements OnInit {
     ctx.canvas.height  = document.getElementById('working-area').clientHeight;
   }
 
-  private setLandMark(file: File){
+  private setLandMark(file){
+    if(file === undefined){
+      document.getElementById('workingCanvas').style.background = '#FFFFFF';
+      document.getElementById('workingCanvas').style.backgroundSize = '35vw';
+      document.getElementById('workingCanvas').style.backgroundRepeat = 'no-repeat';
+      document.getElementById('workingCanvas').parentElement.clientWidth;
+      return;
+    }
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       document.getElementById('workingCanvas').style.background = 'url(' +  fileReader.result + ')';
@@ -157,7 +163,9 @@ export class WorkingAreaComponent implements OnInit {
       document.getElementById('workingCanvas').parentElement.clientWidth;
       //ctx.canvas.height = window.innerHeight;
     }
-    fileReader.readAsDataURL(file);
+    if((file as Blob) !== undefined){
+      fileReader.readAsDataURL(file);
+    }
   }
 
   private getRndColor() {

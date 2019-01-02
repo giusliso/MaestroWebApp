@@ -24,26 +24,35 @@ export class ScenaSummaryComponent implements OnInit {
   summaryForm: FormGroup;
   changeSubscription: Subscription;
   constructor(private layoutState: Store<LayoutState>) {
-
+    this.initForm();
    }
 
   fillSummary(scena: Scene){
-    this.currentScene = scena;
     this.clearData();
-    this.summaryForm.controls['name'].patchValue(scena['name']);
-    this.summaryForm.controls['description'].patchValue(scena['description']);
-    this.summaryForm.enable();
-    this.changeSubscription = this.summaryForm.
-    valueChanges
-      .subscribe(
-        () => this.layoutState
-          .dispatch(new DetailsChangeAction({item: null})));
-
+    if(scena === undefined){
+      this.summaryForm.reset();
+      this.summaryForm.disable();
+    }
+    else {
+      this.currentScene = scena;
+      this.summaryForm.controls['name'].patchValue(scena['name']);
+        this.summaryForm.controls['description'].patchValue(scena['description']);
+        this.summaryForm.enable();
+    
+        this.changeSubscription = this.summaryForm.
+        valueChanges
+          .subscribe(
+            () => this.layoutState
+              .dispatch(new DetailsChangeAction({item: null})));      
+    }
   }
 
   ngOnInit() {
-    this.initForm();
 
+  }
+
+  ngOnDestroy() {
+    this.clearData();
   }
 
   getSummary() {
@@ -78,13 +87,8 @@ export class ScenaSummaryComponent implements OnInit {
     if (this.changeSubscription !== undefined) {
       this.changeSubscription.unsubscribe();
     }
-    // if (this.summaryForm !== undefined) {
-    //   Object.keys(this.summaryForm.controls).forEach(key => {
-    //     this.summaryForm.controls[key].setValue('');
-    //     this.summaryForm.controls[key].disable();
-    //   });
-    // }
   }
+
   private initForm(){
     this.summaryForm = new FormGroup({
       name: new FormControl('', [
@@ -94,7 +98,6 @@ export class ScenaSummaryComponent implements OnInit {
       ]),
       description: new FormControl('')
     });
-
     this.summaryForm.disable();
   }
 

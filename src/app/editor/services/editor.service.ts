@@ -20,17 +20,13 @@ export class EditorService {
       .subscribe(data => this.dataIsPersistent = data)
   }
 
-  public tryNavigate(action: any, cancellation = null): boolean {
-    if (this.dataIsPersistent) {
-      action();
-    } else if ((this.currentScene === undefined)) {
-      cancellation();
-      return false;
+  public tryNavigate(action: Function): boolean {
+    if ((this.currentScene === undefined)) {
+      this.layoutStore.dispatch(new NavigationDeniedAction());
     }
-    else {
-      if (cancellation !== null) {
-        cancellation();
-      }
+    else if (this.dataIsPersistent) {
+      action();
+    } else {
       this.layoutStore.dispatch(new NavigationDeniedAction());
     }
     return this.dataIsPersistent;

@@ -39,6 +39,10 @@ export class OrganizerComponent implements OnInit {
     private update$: Actions,
     private editor$: EditorService
   ) {
+
+    this.update$.pipe(ofType(LayoutActionTypes.NavigationDenied))
+          .subscribe( () => this.selectedItem = this.previoustItemSelected);
+
     this.update$.pipe(ofType(LayoutActionTypes.AddItem))
       .subscribe(
         (node: AddItemAction) => {
@@ -56,9 +60,11 @@ export class OrganizerComponent implements OnInit {
           const idxItemToRemove = this.props.indexOf(itemToRemove);
           this.props.splice(idxItemToRemove, 1);
           this.props = [...this.props];
-          if(this.props.length > 0){
+          if(this.props.length > 1){
             this.selectItem(this.props[idxItemToRemove - 1]);
-          }   
+          } else if (this.props.length > 0) {
+            this.selectItem(this.props[0]);
+          }
         }
       );
 
@@ -82,7 +88,7 @@ export class OrganizerComponent implements OnInit {
   }
 
   select(item){
-    this.editor$.tryNavigate(this.selectItem(item));
+    this.editor$.tryNavigate(() => this.selectItem(item));
   }
 
   selectItem(itemToSelect:any){

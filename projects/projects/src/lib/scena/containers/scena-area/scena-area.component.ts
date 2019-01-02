@@ -6,12 +6,12 @@ import { Scene } from '../../../../api';
 import { SceneState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
 import { Area } from 'src/app/core';
-import { CreateScene, SceneActionTypes, UpdateScene } from '../../actions';
+import { CreateScene, SceneActionTypes, UpdateScene, DeleteScene } from '../../actions';
 import { scenarioActionTypes } from '../../../scenario';
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ScenaDetailsComponent } from '../scena-details';
-import { LayoutActionTypes, ItemSelectAction, CurrentSceneAction, DetailsPersistAction, LandMarkSetAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
+import { LayoutActionTypes, ItemSelectAction, CurrentSceneAction, DetailsPersistAction, LandMarkSetAction, UpdateItemAction, DeleteItemAction } from 'src/app/store/layout-store/actions';
 import { ScenaCreateDialogComponent } from '../scena-create-dialog';
 @Component({
   selector: 'lib-scena-area',
@@ -35,6 +35,19 @@ export class ScenaAreaComponent implements OnInit {
           command: () => this.createScene()
         },
      ]},
+   ];
+
+   public contextMenu  =  
+   [ 
+     { 
+       name: 'Delete Scena',
+       visible: (item) => {
+         console.log(item);
+         return true;
+       },
+       enabled: true,
+       execute: (node) => this.deleteScena(node.item)
+     }
    ];
    private _subscriptions: Subscription[] = [];
   constructor(
@@ -60,7 +73,7 @@ export class ScenaAreaComponent implements OnInit {
           this.layoutStore.dispatch(new CurrentSceneAction({item: selection.payload.item}))
           this.sceneStore.pipe(select('scene', 'scene'))
             .subscribe((scenes: Scene[]) => {
-                const scene = scenes.find(scene => scene.name === selection.payload.item.value.name);
+                const scene = scenes.find(scene => scene.sceneId === selection.payload.item.value.id);
                 this.detailsArea.updateChilds(scene);
             });
         })
@@ -86,6 +99,19 @@ export class ScenaAreaComponent implements OnInit {
          )
         }
       ));
+
+      // Action to do whene there aren't scenes after deletion
+      this._subscriptions.push(
+        this.update$.pipe(ofType(SceneActionTypes.DeleteScene))
+         .subscribe(() =>   this.sceneStore.pipe(first(), select('scene', 'scene'))
+         .subscribe(
+           (scenes: Scene[]) => {
+             if(scenes.length === 0){
+               this.detailsArea.updateChilds(undefined);
+               this.layoutStore.dispatch(new LandMarkSetAction({landmark: undefined}));
+             }
+           }
+         )));
    }
 
 
@@ -116,6 +142,17 @@ export class ScenaAreaComponent implements OnInit {
 
   ngOnDestroy(){
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  
+  private deleteScena (node) {
+    
+    this.sceneStore.pipe(first(), select('scene', 'scene'))
+     .subscribe((scenes: Scene[]) => {
+       const scene = scenes.find(item => item.sceneId === node.id);
+       this.sceneStore.dispatch(new DeleteScene({scene: scene}))
+       this.layoutStore.dispatch(new DeleteItemAction({item: node}));
+     });
   }
 
 }

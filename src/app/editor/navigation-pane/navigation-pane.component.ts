@@ -7,6 +7,9 @@ import { Area } from 'src/app/core';
 import { PanelMenu } from 'primeng/panelmenu';
 import { Listbox } from 'primeng/listbox';
 import { first } from 'rxjs/operators';
+import { EditorService } from '../services/editor.service';
+import { Actions, ofType } from '@ngrx/effects';
+import { LayoutActionTypes } from 'src/app/store/layout-store/actions';
 @Component({
   selector: 'app-navigation-pane',
   templateUrl: './navigation-pane.component.html',
@@ -18,26 +21,30 @@ export class NavigationPaneComponent {
   panelMenu: Listbox;
   items;
   selectedItem;
+  previoustItemSelected;
     constructor(
       private router: Router,
       private layoutStore: Store<LayoutState>,
+      private editor$: EditorService,
+      private update$: Actions,
       ){
  
     }
 
     select(event){
-      switch(event.type){
+      this.selectedItem = null;
+      switch(event.value.type){
         case Area.Scene:
-          this.router.navigateByUrl('scena');
+          this.editor$.tryNavigate(() => this.router.navigateByUrl('scena'));
         break;
         case Area.Scenarios:
-          this.router.navigateByUrl('scenario');
+           this.editor$.tryNavigate(() => this.router.navigateByUrl('scenario'));
         break;
         case Area.LearningPath:
-          this.router.navigateByUrl('learning-path'); 
+           this.editor$.tryNavigate(() => this.router.navigateByUrl('learning-path')); 
         break;
         case Area.Target:
-          this.router.navigateByUrl('target');
+           this.editor$.tryNavigate(() => this.router.navigateByUrl('target'));
         break;
       }
     }
@@ -47,31 +54,34 @@ export class NavigationPaneComponent {
         this.items = [
             {
               label: 'Scene',
-              type: Area.Scene,
+              value : {type: Area.Scene}
             },
             {
               label: 'Scenario',
-              type: Area.Scenarios,
+              value : {type: Area.Scenarios}
             },
            {
               label: 'Learning-Paths',
-              type: Area.LearningPath,
+              value : {type: Area.LearningPath}
 
             },
             {
               label: 'Targets',
-              type: Area.Target,
-
+              value : {type: Area.Target}
             },
             {
               label: 'Contents',
-              type: Area.Contents
+              value: {type: Area.Contents}
             }
         ];
         this.layoutStore.pipe(first(), select('layout', 'area'))
           .subscribe(area => {   
-            console.log(area);
-            this.selectedItem = this.items.find(x => x.type === area);
-          })
+            this.selectedItem = this.items.find(x => x.value.type === area);
+            this.previoustItemSelected = this.selectedItem;
+          });
+        this.update$.pipe(select(LayoutActionTypes.NavigationDenied))
+          .subscribe( () => {
+            this.selectedItem = null;
+          });
     }
 }
