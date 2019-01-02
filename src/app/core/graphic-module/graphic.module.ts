@@ -14,10 +14,12 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {InputTextModule} from 'primeng/inputtext';
 import {MegaMenuModule} from 'primeng/megamenu';
 import {DialogModule} from 'primeng/dialog';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
 const GraphicModules = [
   AccordionModule,
   MenubarModule,
   ButtonModule,
+  DynamicDialogModule,
   DialogModule,
   MegaMenuModule,
   InputTextModule,

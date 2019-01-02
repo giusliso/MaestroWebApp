@@ -6,12 +6,13 @@ import { Scene } from '../../../../api';
 import { SceneState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
 import { Area } from 'src/app/core';
-import { CreateScene, SceneActionTypes } from '../../actions';
+import { CreateScene, SceneActionTypes, UpdateScene } from '../../actions';
 import { scenarioActionTypes } from '../../../scenario';
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ScenaDetailsComponent } from '../scena-details';
-import { LayoutActionTypes, ItemSelectAction, CurrentSceneAction, DetailsPersistAction } from 'src/app/store/layout-store/actions';
+import { LayoutActionTypes, ItemSelectAction, CurrentSceneAction, DetailsPersistAction, LandMarkSetAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
+import { ScenaCreateDialogComponent } from '../scena-create-dialog';
 @Component({
   selector: 'lib-scena-area',
   templateUrl: './scena-area.component.html',
@@ -22,6 +23,9 @@ export class ScenaAreaComponent implements OnInit {
    public organizerProps = [];
    @ViewChild(ScenaDetailsComponent)
    detailsArea: ScenaDetailsComponent;
+
+   @ViewChild(ScenaCreateDialogComponent)
+   createScenaDialog: ScenaCreateDialogComponent;
 
    public menuProps =  
    [  
@@ -39,6 +43,15 @@ export class ScenaAreaComponent implements OnInit {
     private update$: Actions,
     ) {
       this._subscriptions.push(this.update$
+        .pipe(ofType(SceneActionTypes.UpdateScene))
+         .subscribe((scene:UpdateScene) => {
+          this.layoutStore.dispatch(
+            new UpdateItemAction({item:
+             {value:{id:scene.payload.scene.sceneId, name: scene.payload.scene.name}}}
+             ));
+          this.layoutStore.dispatch(new DetailsPersistAction({item: null}))
+         }));
+      this._subscriptions.push(this.update$
         .pipe(ofType(SceneActionTypes.CreateScene))
          .subscribe((scene:CreateScene) => this.fillOrganizer(scene.payload.scene)));
       this._subscriptions.push(
@@ -51,6 +64,18 @@ export class ScenaAreaComponent implements OnInit {
                 this.detailsArea.updateChilds(scene);
             });
         })
+      );
+
+      // Set background working area.
+      this._subscriptions.push(
+        this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
+         .subscribe((action : ItemSelectAction) => {
+            this.sceneStore.pipe(first(), select('scene', 'scene'))
+             .subscribe(scenes => {
+               const selectedScene = scenes.find(scene => scene.sceneId === action.payload.item.value.id);
+               this.layoutStore.dispatch(new LandMarkSetAction({landmark: selectedScene.landmark}));
+             })
+         })
       );
 
       this.sceneStore.pipe(first(), select('scene', 'scene'))
@@ -74,7 +99,8 @@ export class ScenaAreaComponent implements OnInit {
   }
 
   createScene() {
-    this.sceneStore.dispatch(new CreateScene({ scene: {}}));
+    this.createScenaDialog.showDialog();
+   // this.sceneStore.dispatch(new CreateScene({ scene: {}}));
   }
 
   fillOrganizer(scene: Scene){

@@ -68,9 +68,9 @@ export class TargetAreaComponent implements OnInit {
     this.targetStore.pipe(first(), select('target', 'targets'))
      .subscribe((targets: Target[]) => {
        const target = targets.find(item => item.targetId === node.id);
-       this.project$.removeTarget(target);
        this.targetStore.dispatch(new DeleteTarget({target: target}))
        this.layoutStore.dispatch(new DeleteItemAction({item: node}));
+       this.project$.removeTarget(target);
      });
   }
 

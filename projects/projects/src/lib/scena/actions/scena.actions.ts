@@ -5,6 +5,7 @@ import { Scene } from '../../../api';
 export enum SceneActionTypes {
   LoadScenes = '[Scene] Load Scenes',
   CreateScene = '[Scene] Create Scene',
+  UpdateScene = '[Scene] Update Scene',
   DeleteScene = '[Scene] Delete Scene'
 }
 
@@ -18,6 +19,10 @@ export class CreateScene implements Action {
   constructor( public payload: { scene: Scene}){}
 }
 
+export class UpdateScene implements Action {
+  readonly type = SceneActionTypes.UpdateScene;
+  constructor( public payload: { scene: Scene}){}
+}
 export class DeleteScene implements Action {
   readonly type = SceneActionTypes.DeleteScene;
   constructor( public payload: { scene: Scene}){}
@@ -26,4 +31,5 @@ export class DeleteScene implements Action {
 export type SceneActions =
   LoadScenes |
   CreateScene |
+  UpdateScene |
   DeleteScene;

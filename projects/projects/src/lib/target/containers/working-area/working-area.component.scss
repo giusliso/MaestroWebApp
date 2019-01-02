@@ -1,8 +1,5 @@
 
-  .workingArea {
-    background:
-      url(/assets/testData/F16_Landmark.jpg);
-    background-size: 82%;
-    background-repeat: no-repeat;
-    background-position: center;
+  #workingCanvas {
+    position: relative;
+    border: solid 1px grey; 
   }

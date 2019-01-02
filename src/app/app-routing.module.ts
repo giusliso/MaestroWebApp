@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TargetAreaComponent, ScenaAreaComponent, ScenarioAreaComponent, LearningPathAreaComponent } from '../../projects/projects/src/public_api';
 import { EditorContainerComponent } from './editor/editor-container/editor-container.component';
 const routes: Routes = [
+  { path: '', redirectTo: '/scena', pathMatch: 'full' },
   {
     path: 'target',
     component: TargetAreaComponent,

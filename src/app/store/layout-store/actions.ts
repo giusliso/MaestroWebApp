@@ -13,7 +13,8 @@ export enum LayoutActionTypes {
   NavigationDenied = '[Navigation] Denied',
   NavigationBack = '[Navigation] Denied Cancellation',
   CurrentArea = '[Navigation] Current Area',
-  CurrentScene = '[Navigation] Current Scene'
+  CurrentScene = '[Navigation] Current Scene',
+  LandMarkSet = '[WorkingArea] Change Scene LandMark',
 }
 
 export class DialogOpenedStatusAction implements Action {
@@ -70,12 +71,16 @@ export class CurrentAreaAction implements Action {
   readonly type = LayoutActionTypes.CurrentArea;
   constructor(public payload: { area: Area }) {}
 }
-
-
 export class CurrentSceneAction implements Action {
   readonly type = LayoutActionTypes.CurrentScene;
 
   constructor(public payload: { item: any }) {}
+}
+
+export class LandMarkSetAction implements Action {
+  readonly type = LayoutActionTypes.LandMarkSet;
+
+  constructor(public payload: { landmark: any }) {}
 }
 
 export type LayoutActions =
@@ -89,4 +94,5 @@ export type LayoutActions =
   | NavigationDeniedAction
   | NavigationBackAction
   | CurrentAreaAction
-  | CurrentSceneAction;
+  | CurrentSceneAction
+  | LandMarkSetAction;

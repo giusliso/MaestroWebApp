@@ -11,6 +11,7 @@ export interface State {
   dataIsPersistent;
   area;
   currentScene;
+  selectedLandmark;
 }
 
 export const initialState = {
@@ -23,7 +24,8 @@ export const initialState = {
   locatorProps: undefined,
   dataIsPersistent: true,
   area: undefined,
-  currentScene: undefined
+  currentScene: undefined,
+  selectedLandmark: undefined
 };
 
 export function reducer(state = initialState, action: LayoutActions): State {
@@ -66,6 +68,18 @@ export function reducer(state = initialState, action: LayoutActions): State {
       return {
         ...state,
         currentScene: action.payload.item
+      };
+    }
+    case LayoutActionTypes.LandMarkSet: {
+      return {
+        ...state,
+        selectedLandmark: action.payload.landmark
+      };
+    }
+    case LayoutActionTypes.ItemSelect: {
+      return {
+        ...state,
+        organizerSelection: action.payload.item,
       };
     }
     default: {

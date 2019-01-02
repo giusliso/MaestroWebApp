@@ -11,3 +11,10 @@
 
     </div>
 </form>
+<p-dialog #errorDialog header="Error" [(visible)]="displayErrorDialog" [modal]="true" [responsive]="false" [minY]="70" 
+        [maximizable]="false" [baseZIndex]="10000" [closable] = "false">
+    <span>{{TextErrorDialog}}</span>
+        <p-footer>
+                <button type="button" pButton (click)="displayErrorDialog=false" label="Ok"></button>
+        </p-footer>
+</p-dialog>

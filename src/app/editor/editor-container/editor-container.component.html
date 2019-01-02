@@ -4,22 +4,25 @@
 <div class="navbar">
   <app-dashboard (save)="onSave($event)" (revert)="onRevert($event)"></app-dashboard>
 </div>
-<div class="left">
-    <div class="organizer">
-            <app-organizer [props] = "organizerProps" [contextMenuProps] = "contextMenuProps"></app-organizer>
-    </div>
-    <div class="navigator">
-        <app-navigation-pane></app-navigation-pane>
-    </div>
+<div class="editor-area">
+        <div class="left">
+                <div class="organizer">
+                        <app-organizer [props] = "organizerProps" [contextMenuProps] = "contextMenuProps"></app-organizer>
+                </div>
+                <div class="navigator">
+                    <app-navigation-pane></app-navigation-pane>
+                </div>
+            </div>
+            <div class="working-area" id = "working-area">
+                <ng-content select = "lib-working-area"></ng-content>
+            </div>
+            <div class="details">
+                <app-details>
+                   <ng-content></ng-content>
+                </app-details>
+            </div>
 </div>
-<div class="working-area">
-    <ng-content select = "lib-working-area"></ng-content>
-</div>
-<div class="details">
-    <app-details>
-       <ng-content></ng-content>
-    </app-details>
-</div>
+
 <p-dialog header="Error" [(visible)]="displayDialog" [modal]="true" [responsive]="false" [minY]="70" 
         [maximizable]="false" [baseZIndex]="10000" [closable] = "false">
     <span>{{TextDialog}}</span>

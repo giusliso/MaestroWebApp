@@ -20,7 +20,6 @@ export function reducer(state = initialState, action: SceneActions): SceneState 
       return state;
     case SceneActionTypes.CreateScene:
       let currentList = state.scene;
-      action.payload.scene.name = "New Scene " + state.scene.length;
       action.payload.scene.sceneId = state.scene.length;
       currentList.push(action.payload.scene);
       return {
@@ -34,6 +33,15 @@ export function reducer(state = initialState, action: SceneActions): SceneState 
         ...state,
         scene : list
       }
+
+    case SceneActionTypes.UpdateScene:  
+    const updatedList = state.scene;
+    const itemToUpdate = state.scene.find( x => x.sceneId === action.payload.scene.sceneId);
+    updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.scene;
+    return {
+      ...state,
+      scene : updatedList
+    }
 
     default:
       return state;

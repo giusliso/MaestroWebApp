@@ -8,6 +8,7 @@ import { EditorModule } from 'src/app/editor/editor.module';
 import { TargetModule } from '../target';
 import { StoreModule } from '@ngrx/store';
 import  * as  reducers from './reducers';
+import { ScenaCreateDialogComponent } from './containers/scena-create-dialog/scena-create-dialog.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +17,6 @@ import  * as  reducers from './reducers';
     TargetModule,
     StoreModule.forFeature('scene', reducers.reducer)
   ],
-  declarations: [ScenaAreaComponent, ScenaDetailsComponent, ScenaSummaryComponent]
+  declarations: [ScenaAreaComponent, ScenaDetailsComponent, ScenaSummaryComponent, ScenaCreateDialogComponent]
 })
 export class ScenaModule { }
