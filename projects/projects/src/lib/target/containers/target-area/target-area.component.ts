@@ -94,6 +94,7 @@ export class TargetAreaComponent implements OnInit {
           .subscribe((targets: Target[]) => {
              const target = targets.find(target => target.name === selection.payload.item.value.name);
              this.detailsArea.updateChilds(target);
+             this.workingArea.drawCoordinates(target.coordinateX, target.coordinateY, true);
           });
       })
     );

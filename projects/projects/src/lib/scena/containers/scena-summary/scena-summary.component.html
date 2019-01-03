@@ -4,11 +4,12 @@
            <p > Name *:</p>
         </div>
         <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+    </div>
+    <div class="row">
         <div class="label">
             <p > Description *:</p>
          </div>
          <textarea pInputTextarea formControlName="description" ></textarea>
-
     </div>
 </form>
 <p-dialog #errorDialog header="Error" [(visible)]="displayErrorDialog" [modal]="true" [responsive]="false" [minY]="70" 

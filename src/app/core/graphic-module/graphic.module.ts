@@ -14,7 +14,9 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {InputTextModule} from 'primeng/inputtext';
 import {MegaMenuModule} from 'primeng/megamenu';
 import {DialogModule} from 'primeng/dialog';
+import {PickListModule} from 'primeng/picklist';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
+
 const GraphicModules = [
   AccordionModule,
   MenubarModule,
@@ -27,7 +29,8 @@ const GraphicModules = [
   FileUploadModule,
   PanelMenuModule,
   TabViewModule,
-  ToolbarModule
+  ToolbarModule,
+  PickListModule
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
@@ -20,6 +20,7 @@ import { style } from '@angular/animations';
 export class WorkingAreaComponent implements OnInit {
   @ViewChild('myCanvas') myCanvas;
   public context: CanvasRenderingContext2D;
+
   public currentLandmark;
   private subscriptions: Subscription[] = [];
   private pointSize = 3;
@@ -36,6 +37,7 @@ export class WorkingAreaComponent implements OnInit {
     // Load landmark of selected scene in working area.
     this.update$.pipe(ofType(LayoutActionTypes.LandMarkSet))
         .subscribe((item : LandMarkSetAction) => {
+          this.redrawCanvasTargets();
           this.setLandMark(item.payload.landmark);     
         }
     );
@@ -43,7 +45,7 @@ export class WorkingAreaComponent implements OnInit {
     window.onresize = () =>  this.setCanvasDimension();
 
     this.layoutStore.pipe(filter( x => x !== undefined ||  x !== null), select('layout', 'selectedLandmark'))
-      .subscribe(landmark => {
+      .subscribe(landmark => {     
         this.setLandMark(landmark);
       });
     this.layoutStore.pipe(select('layout', 'area'))
@@ -90,36 +92,36 @@ export class WorkingAreaComponent implements OnInit {
                         radius * 2 + 2, radius * 2 + 2);
   }
 
-  public drawCoordinates(x,y){
+  public drawCoordinates(x,y, selected: boolean = false){
 
+    if(selected){
+      this.redrawCanvasTargets();
+    }
     var ctx = this.myCanvas.nativeElement.getContext("2d");
 
     ctx.beginPath();
 
     ctx.globalAlpha = 0.45; // set global alpha
     ctx.beginPath();
-    ctx.arc(x, y, 10, 0, 2 * Math.PI, false);
+    const radius = (selected) ? 13 : 10;
+    ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
     //ctx.fillStyle = "red";
     ctx.fill = 'transparent';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "red";
+    ctx.lineWidth = (selected) ? 3 : 2;
+    ctx.strokeStyle = (selected) ? "green" : "red";
     ctx.stroke();
 
     // for remove
     //ctx.clearRect(5, 2 * Math.PI, x, y);
 
-}
+  }
+
   ngOnInit() {
     this.setCanvasDimension();
     this.subscriptions.push(this.layoutStore.pipe(select('layout', 'currentScene'))
       .subscribe(scene => this.currentScene = scene)) ;
-    this.targetStore.pipe(first(), select('target', 'targets'))
-    .subscribe((targets: Target[]) => 
-      targets
-      .filter( target => target.sceneId === this.currentScene.value.id)
-      .forEach( 
-        (target: Target) => this.drawCoordinates(target.coordinateX, target.coordinateY)
-        ));
+
+    this.redrawCanvasTargets();
   }
 
   ngOnDestroy(){
@@ -127,9 +129,13 @@ export class WorkingAreaComponent implements OnInit {
 
   }
 
-  private redrawCanvasTargets() {
+  private clearCanvasTargets() {
     var ctx = this.myCanvas.nativeElement.getContext("2d");
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+
+  private redrawCanvasTargets() {
+    this.clearCanvasTargets();
     this.layoutStore.pipe(first(), select('layout', 'currentScene'))
       .subscribe(scene => this.currentScene = scene)
     this.targetStore.pipe(first(), select('target', 'targets'))
@@ -148,7 +154,7 @@ export class WorkingAreaComponent implements OnInit {
   }
 
   private setLandMark(file){
-    if(file === undefined){
+    if(file === undefined && document.getElementById('workingCanvas') != undefined){
       document.getElementById('workingCanvas').style.background = '#FFFFFF';
       document.getElementById('workingCanvas').style.backgroundSize = '35vw';
       document.getElementById('workingCanvas').style.backgroundRepeat = 'no-repeat';

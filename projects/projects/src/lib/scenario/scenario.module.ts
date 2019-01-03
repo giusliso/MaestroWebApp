@@ -9,6 +9,7 @@ import { TargetModule } from '../target';
 import { ScenarioCreateDialogComponent } from './containers';
 import { StoreModule } from '@ngrx/store';
 import  * as  reducers from './reducers';
+import { LeaningPathsTabComponent } from './containers/scenario-leaning-paths-tab';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +18,6 @@ import  * as  reducers from './reducers';
     TargetModule,
     StoreModule.forFeature('scenario', reducers.reducer)
   ],
-  declarations: [ScenarioAreaComponent, ScenarioDetailsComponent, ScenarioSummaryComponent, ScenarioCreateDialogComponent]
+  declarations: [ScenarioAreaComponent, ScenarioDetailsComponent, ScenarioSummaryComponent, ScenarioCreateDialogComponent, LeaningPathsTabComponent]
 })
 export class ScenarioModule { }

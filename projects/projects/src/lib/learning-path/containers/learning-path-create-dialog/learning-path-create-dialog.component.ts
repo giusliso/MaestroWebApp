@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { CreateScenario } from '../../actions';
+import { CreateLearningPath } from '../../actions';
 import { Store, select } from '@ngrx/store';
-import { Scenario } from '../../../../api';
-import { ScenarioState } from '../../reducers';
+import { LearningPath } from '../../../../api';
+import { LearningPathState } from '../../reducers';
 import { Dialog } from 'primeng/dialog';
 import { first } from 'rxjs/operators';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 
 @Component({
-  selector: 'lib-scenario-create-dialog',
-  templateUrl: './scenario-create-dialog.component.html',
-  styleUrls: ['./scenario-create-dialog.component.scss']
+  selector: 'lib-learning-path-create-dialog',
+  templateUrl: './learning-path-create-dialog.component.html',
+  styleUrls: ['./learning-path-create-dialog.component.scss']
 })
 
-export class ScenarioCreateDialogComponent implements OnInit {
+export class LearningPathCreateDialogComponent implements OnInit {
 
   @ViewChild('errorDialog')
   errorDialog: Dialog;
@@ -23,7 +23,7 @@ export class ScenarioCreateDialogComponent implements OnInit {
   TextErrorDialog = "";
   displayErrorDialog = false;
   constructor(
-    private scenarioStore: Store<ScenarioState>,
+    private learningPathStore: Store<LearningPathState>,
     private layoutStore: Store<LayoutState>,
     ) { }
 
@@ -41,13 +41,14 @@ export class ScenarioCreateDialogComponent implements OnInit {
        
      this.layoutStore.pipe(first(), select('layout', 'currentScene'))
      .subscribe( currentScene => {
-        const scenario: Scenario = {
+        const learningPath: LearningPath = {
           sceneId: currentScene.value.id,
           name: this.summaryForm.controls['name'].value,
           description: this.summaryForm.controls['description'].value,
-          learningPaths: []
+          inUse: false,
+          targets: [],
         };
-        this.scenarioStore.dispatch(new CreateScenario({ Scenario: scenario}));
+        this.learningPathStore.dispatch(new CreateLearningPath({ learningPath: learningPath}));
         this.display = false;
       });
     }

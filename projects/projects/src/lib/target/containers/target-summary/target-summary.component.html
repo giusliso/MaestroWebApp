@@ -1,8 +1,19 @@
-<form [formGroup]="summaryForm">
-        <div class="row">
-            <div class="label">
-               <p > First Name *:</p>
-            </div>
-            <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+<form [formGroup]="summaryForm" >
+    <div class="row">
+        <div class="label">
+           <p > Name *:</p>
         </div>
+        <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+    </div>
+    <div class="row">
+        <div class="label">
+            <p > Description *:</p>
+         </div>
+         <textarea pInputTextarea formControlName="description" ></textarea>
+   </div>
+   <div class="label">
+    <p > Position:</p>
+    </div>
+        <p>X: {positionX} Y: {positionX}</p>
+    </div>
 </form>

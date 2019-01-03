@@ -1,0 +1,11 @@
+
+<p-pickList [source]="availables" [target]="currentLinked" sourceHeader="Available" targetHeader="Linked" [responsive]="true" 
+    (onMoveToTarget) = "onChange()"   (onMoveToSource) = "onChange()" (onSourceReorder) = "onChange()" 
+    dragdrop="true" dragdropScope="cars" sourceFilterPlaceholder="Search by brand" 
+    [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+    <ng-template let-learningPath pTemplate="item">
+        <div class="ui-helper-clearfix">
+            <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{learningPath.name}}</div>
+        </div>
+    </ng-template>
+</p-pickList>
