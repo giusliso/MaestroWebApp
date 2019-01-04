@@ -13,13 +13,13 @@
                  </div>
                  <textarea pInputTextarea formControlName="description" maxlength="50"></textarea>     
             </div>
-            <div class="row">
-                <div class="label">
-                    <p > Upload Landmark *:</p>
-                 </div>                         
-            <input type="file" formControlName="landmark" (change)="uploadFile($event.target.files)" accept="image/*"/>
-            </div>
         </form>
+        <p-fileUpload #fileUpload name="myfile[]" [multiple] = "false"
+            [showUploadButton] = "false"
+            [showCancelButton] = "false"
+            [chooseLabel] = "chooseLabel"
+            accept = "image/*"
+            [auto] = "false"></p-fileUpload>
         <p-footer>
             <button type="button" pButton icon="pi pi-check" (click)="onSubmit()" label="Save"></button>
             <button type="button" pButton icon="pi pi-close" (click)="display=false" label="Cancel" class="ui-button-secondary"></button>

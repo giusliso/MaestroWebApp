@@ -27,6 +27,8 @@ export class ScenarioAreaComponent implements OnInit {
    @ViewChild(ScenarioCreateDialogComponent)
    createScenaDialog: ScenarioCreateDialogComponent;
 
+   public currentScene; 
+
    public menuProps =  
    [  
     {label: 'File',
@@ -51,9 +53,23 @@ export class ScenarioAreaComponent implements OnInit {
    private _subscriptions: Subscription[] = [];
   constructor(
     private layoutStore: Store<LayoutState>,
-    private ScenarioStore: Store<Scenario>,
+    private scenarioStore: Store<Scenario>,
     private update$: Actions,
     ) {
+
+      // Load scenarios
+      this.layoutStore.pipe(first(), select('layout', 'currentScene'))
+        .subscribe(scene => this.currentScene = scene);
+     
+      this.scenarioStore.pipe(first(), select('scenario', 'scenario'))
+      .subscribe(scenarios => scenarios
+        .filter( scenario => scenario.sceneId === this.currentScene.value.id)
+        .forEach(
+          (Scenario: Scenario) => {
+          this.organizerProps.push(
+            {value:{id:Scenario.scenarioId, name: Scenario.name}}  
+          )}
+      ));
 
       // Subscription when scenario is updated
       this._subscriptions.push(this.update$
@@ -61,7 +77,7 @@ export class ScenarioAreaComponent implements OnInit {
          .subscribe((Scenario:UpdateScenario) => {
           this.layoutStore.dispatch(
             new UpdateItemAction({item:
-             {value:{id:Scenario.payload.Scenario.scenarioId, name: Scenario.payload.Scenario.name}}}
+             {value:{id:Scenario.payload.scenario.scenarioId, name: Scenario.payload.scenario.name}}}
              ));
           this.layoutStore.dispatch(new DetailsPersistAction({item: null}))
          }));
@@ -69,13 +85,13 @@ export class ScenarioAreaComponent implements OnInit {
       // subscription when new scenario is created.
       this._subscriptions.push(this.update$
         .pipe(ofType(ScenarioActionTypes.CreateScenario))
-         .subscribe((Scenario:CreateScenario) => this.fillOrganizer(Scenario.payload.Scenario)));
+         .subscribe((Scenario:CreateScenario) => this.fillOrganizer(Scenario.payload.scenario)));
 
       // Subscription for update details
       this._subscriptions.push(
         this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
         .subscribe((selection: ItemSelectAction) => {
-          this.ScenarioStore.pipe(select('scenario', 'Scenario'))
+          this.scenarioStore.pipe(select('scenario', 'scenario'))
             .subscribe((Scenarios: Scenario[]) => {
                 const Scenario = Scenarios.find(Scenario => Scenario.scenarioId === selection.payload.item.value.id);
                 this.detailsArea.updateChilds(Scenario);
@@ -83,19 +99,10 @@ export class ScenarioAreaComponent implements OnInit {
         })
       );
 
-      this.ScenarioStore.pipe(first(), select('scenario', 'Scenario'))
-      .subscribe(Scenarios => Scenarios.forEach(
-        (Scenario: Scenario) => {
-         this.organizerProps.push(
-           {value:{id:Scenario.scenarioId, name: Scenario.name}}  
-         )
-        }
-      ));
-
       // Action to do whene there aren't Scenarios after deletion
       this._subscriptions.push(
         this.update$.pipe(ofType(ScenarioActionTypes.DeleteScenario))
-         .subscribe(() =>   this.ScenarioStore.pipe(first(), select('scenario', 'Scenario'))
+         .subscribe(() =>   this.scenarioStore.pipe(first(), select('scenario', 'scenario'))
          .subscribe(
            (Scenarios: Scenario[]) => {
              if(Scenarios.length === 0){
@@ -118,7 +125,7 @@ export class ScenarioAreaComponent implements OnInit {
 
   createScenario() {
     this.createScenaDialog.showDialog();
-   // this.ScenarioStore.dispatch(new CreateScenario({ Scenario: {}}));
+   // this.scenarioStore.dispatch(new CreateScenario({ Scenario: {}}));
   }
 
   fillOrganizer(Scenario: Scenario){
@@ -139,10 +146,10 @@ export class ScenarioAreaComponent implements OnInit {
   
   private deleteScenario (node) {
     
-    this.ScenarioStore.pipe(first(), select('scenario', 'Scenario'))
+    this.scenarioStore.pipe(first(), select('scenario', 'scenario'))
      .subscribe((Scenarios: Scenario[]) => {
        const Scenario = Scenarios.find(item => item.scenarioId === node.id);
-       this.ScenarioStore.dispatch(new DeleteScenario({Scenario: Scenario}))
+       this.scenarioStore.dispatch(new DeleteScenario({scenario: Scenario}))
        this.layoutStore.dispatch(new DeleteItemAction({item: node}));
      });
   }

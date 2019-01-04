@@ -47,7 +47,7 @@ export class ScenarioCreateDialogComponent implements OnInit {
           description: this.summaryForm.controls['description'].value,
           learningPaths: []
         };
-        this.scenarioStore.dispatch(new CreateScenario({ Scenario: scenario}));
+        this.scenarioStore.dispatch(new CreateScenario({ scenario: scenario}));
         this.display = false;
       });
     }
@@ -78,7 +78,7 @@ export class ScenarioCreateDialogComponent implements OnInit {
         Validators.minLength(0),
         Validators.maxLength(20)
       ]),
-      description: new FormControl(''),
+      description: new FormControl('')
     });
   }
 

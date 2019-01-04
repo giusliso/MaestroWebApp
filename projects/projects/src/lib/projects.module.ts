@@ -7,9 +7,11 @@ import { ScenaModule } from './scena/scena.module';
 import { ScenarioModule } from './scenario/scenario.module';
 import { LearningPathModule } from './learning-path/learning-path.module';
 import { ProjectsService } from './services/projects.service';
+import { ContentModule } from './content/content.module';
 
 @NgModule({
   imports: [
+    ContentModule,
     ScenaModule,
     ScenarioModule,
     LearningPathModule,
@@ -23,6 +25,8 @@ import { ProjectsService } from './services/projects.service';
     ScenaModule,
     TargetModule,
     ScenarioModule,
-    LearningPathModule]
+    LearningPathModule,
+    ContentModule
+  ]
 })
 export class ProjectsModule { }

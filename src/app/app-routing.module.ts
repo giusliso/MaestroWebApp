@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { TargetAreaComponent, ScenaAreaComponent, ScenarioAreaComponent, LearningPathAreaComponent } from '../../projects/projects/src/public_api';
+import { 
+  ContentAreaComponent,
+  TargetAreaComponent, 
+  ScenaAreaComponent, 
+  ScenarioAreaComponent, 
+  LearningPathAreaComponent } from '../../projects/projects/src/public_api';
 import { EditorContainerComponent } from './editor/editor-container/editor-container.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/scena', pathMatch: 'full' },
   {
@@ -23,6 +29,11 @@ const routes: Routes = [
   {
     path: 'learning-path',
     component: LearningPathAreaComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'content',
+    component: ContentAreaComponent,
     pathMatch: 'full'
   },
   { path: 'demo', 

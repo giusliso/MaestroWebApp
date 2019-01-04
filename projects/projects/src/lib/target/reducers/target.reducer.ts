@@ -27,6 +27,15 @@ export function reducer(state = initialState, action: TargetActions): TargetStat
         ...state,
         targets : currentList
       };
+    
+    case TargetActionTypes.UpdateTarget:  
+      const updatedList = state.targets;
+      const itemToUpdate = state.targets.find( x => x.targetId === action.payload.target.targetId);
+      updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.target;
+      return {
+        ...state,
+        targets : updatedList
+    }
     case TargetActionTypes.DeleteTarget:  
       const list = state.targets;
       list.splice(state.targets.indexOf(action.payload.target),1);

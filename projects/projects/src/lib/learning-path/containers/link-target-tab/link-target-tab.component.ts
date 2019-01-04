@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Scenario, LearningPath, Target } from '../../../../api';
 import { Store, select } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { Subscription } from 'rxjs';
 import { Dialog } from 'primeng/dialog';
 import { TargetState } from '../../../target';
+import { PickList } from 'primeng/picklist';
 @Component({
   selector: 'lib-link-target-tab',
   templateUrl: './link-target-tab.component.html',
@@ -16,16 +17,18 @@ import { TargetState } from '../../../target';
 export class LinkTargetTabComponent implements OnInit {
 
     availables: Target[];
-      
+
     currentLinked: Target[];
+
+    pickListVisible: boolean;
+
     constructor(
       private targetStore: Store<TargetState>,
       private layoutStore: Store<LayoutState>){
     }
 
     ngOnInit() {
-        this.availables = [];
-        this.currentLinked = [];
+
     }
 
     onChange() {
@@ -44,6 +47,8 @@ export class LinkTargetTabComponent implements OnInit {
            this.currentLinked = learningPath.targets;
            this.availables = target
              .filter(x => this.currentLinked.indexOf(x) === -1);
+            this.currentLinked = [...this.currentLinked];
+            this.availables = [...this.availables];
        });
     }
 

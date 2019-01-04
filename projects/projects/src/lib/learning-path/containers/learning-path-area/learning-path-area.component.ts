@@ -20,6 +20,7 @@ import { LearningPathCreateDialogComponent } from '../learning-path-create-dialo
 })
 export class LearningPathAreaComponent implements OnInit {
 
+   private currentScene;
    public organizerProps = [];
    @ViewChild(LearningPathDetailsComponent)
    detailsArea: LearningPathDetailsComponent;
@@ -49,6 +50,7 @@ export class LearningPathAreaComponent implements OnInit {
      }
    ];
    private _subscriptions: Subscription[] = [];
+   
   constructor(
     private layoutStore: Store<LayoutState>,
     private LearningPathStore: Store<LearningPath>,
@@ -83,14 +85,21 @@ export class LearningPathAreaComponent implements OnInit {
         })
       );
 
+      // Load learning paths
+      this.layoutStore.pipe(first(), select('layout', 'currentScene'))
+      .subscribe(scene => this.currentScene = scene);
+
       this.LearningPathStore.pipe(first(), select('learning-path', 'learningPath'))
-      .subscribe(LearningPaths => LearningPaths.forEach(
-        (LearningPath: LearningPath) => {
-         this.organizerProps.push(
-           {value:{id:LearningPath.learningPathId, name: LearningPath.name}}  
-         )
-        }
-      ));
+      .subscribe(learningPaths => 
+        learningPaths
+          .filter( target => target.sceneId === this.currentScene.value.id)
+          .forEach(
+            (LearningPath: LearningPath) => {
+            this.organizerProps.push(
+              {value:{id:LearningPath.learningPathId, name: LearningPath.name}}  
+            )
+            }
+          ));
 
       // Action to do whene there aren't LearningPaths after deletion
       this._subscriptions.push(

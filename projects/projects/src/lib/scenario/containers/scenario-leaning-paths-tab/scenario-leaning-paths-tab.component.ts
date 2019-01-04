@@ -24,8 +24,7 @@ export class LeaningPathsTabComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.availables = [];
-        this.currentLinked = [];
+
     }
 
     onChange() {
@@ -43,7 +42,9 @@ export class LeaningPathsTabComponent implements OnInit {
        .subscribe((learningPath: LearningPath[]) => {
            this.currentLinked = scenario.learningPaths;
            this.availables = learningPath
-             .filter(x => this.currentLinked.indexOf(x) === -1);
+             .filter(x => this.currentLinked.indexOf(x) === -1);   
+           this.currentLinked = [...this.currentLinked];
+           this.availables = [...this.availables];      
        });
     }
 

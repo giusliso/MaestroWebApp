@@ -16,16 +16,16 @@ export class LoadScenarios implements Action {
 
 export class CreateScenario implements Action {
   readonly type = ScenarioActionTypes.CreateScenario;
-  constructor( public payload: { Scenario: Scenario}){}
+  constructor( public payload: { scenario: Scenario}){}
 }
 
 export class UpdateScenario implements Action {
   readonly type = ScenarioActionTypes.UpdateScenario;
-  constructor( public payload: { Scenario: Scenario}){}
+  constructor( public payload: { scenario: Scenario}){}
 }
 export class DeleteScenario implements Action {
   readonly type = ScenarioActionTypes.DeleteScenario;
-  constructor( public payload: { Scenario: Scenario}){}
+  constructor( public payload: { scenario: Scenario}){}
 }
 
 export type ScenarioActions =

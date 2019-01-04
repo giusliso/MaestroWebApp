@@ -1,0 +1,16 @@
+form {
+    overflow-x: hidden !important;
+}
+.row {
+    display: flex;
+    padding-bottom: 10px;
+    .label {
+        width: 17%;
+        margin-right: 10px;
+        margin-left: 20px;
+        min-width: 150px;
+    }
+    input > textarea {
+    width: 60%;
+    }
+}

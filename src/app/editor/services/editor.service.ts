@@ -23,6 +23,7 @@ export class EditorService {
   public tryNavigate(action: Function): boolean {
     if ((this.currentScene === undefined)) {
       this.layoutStore.dispatch(new NavigationDeniedAction());
+      return false;
     }
     else if (this.dataIsPersistent) {
       action();

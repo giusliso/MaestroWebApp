@@ -36,7 +36,7 @@ export class ScenarioDetailsComponent implements OnInit {
 
       updatedScenario.learningPaths = this.learningPathTab.getList();
 
-      this.ScenarioState.dispatch(new UpdateScenario({Scenario: updatedScenario}));
+      this.ScenarioState.dispatch(new UpdateScenario({scenario: updatedScenario}));
     }
   }
 

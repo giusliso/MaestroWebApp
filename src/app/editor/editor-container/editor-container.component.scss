@@ -1,58 +1,67 @@
 
 :host {
    box-sizing: border-box;
-   height: 100vh;
+   .navbar {
+    z-index: 0 !important;
+    height: 45px;
+   // width: 100vw;
+    margin-bottom: 5px;
+   }
    .menu-bar {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
      ::ng-deep .ui-menubar {
-        height: 6vh;
+        z-index: 200;  
+        height: 45px;
      }
      ::ng-deep .ui-menu-list {
-        z-index: 200;       
+        z-index: 500 !important;    
      }
-     
-
    }
+   $editorHeight : 88vh;
    .editor-area {
+    height: $editorHeight;
     display: flex;
     flex-direction: row;
         .left {
+            height: $editorHeight;
             display: flex;
             flex-direction: column;
             width: 18vw;
             .organizer{
-                height: 64vh;
+                height: 70vh;
                 overflow: scroll;
                 }
             .navigator {
-                height: auto;
                 bottom: 0px;
             }
         } 
         .working-area {
             width: 40vw;
-            height: 86.5vh;
         }
         .details {
             width: 42vw;
             ::ng-deep .ui-tabview-panels {
-                height: 81.5vh;    
-                width: 100vw;
+                height: $editorHeight - 4.5vh;  //tabs height 
+                width: 41.5vw;
                 display: flex;
-                flex-direction: row; 
-                
+                flex-direction: row;              
                 .row {                   
                     //align-items: left;
-                    width: 100%;
                     margin-top:10px;
+                    margin-left: 10px;
+                    display: flex;
+                    flex-direction: row; 
                     .label {                     
                         margin-left: 10px;
-                        min-width: 150px;
+                        min-width: 10vw;
                     }
                     input {
-                        width: 65%
+                        width: 20vw;
                     }
                     textarea {
-                        width: 65%;
+                        width: 20vw;
                     }
                 }
             }       

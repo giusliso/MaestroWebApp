@@ -3,12 +3,12 @@ import { ScenarioActions, ScenarioActionTypes } from '../actions/scenario.action
 import { Scenario } from '../../../api';
 
 export interface ScenarioState {
-  Scenario: Scenario[],
+  scenario: Scenario[],
   error:boolean
 }
 
 export const initialState: ScenarioState = {
-  Scenario : [],
+  scenario : [],
   error : false
 
 };
@@ -19,28 +19,28 @@ export function reducer(state = initialState, action: ScenarioActions): Scenario
     case ScenarioActionTypes.LoadScenarios:
       return state;
     case ScenarioActionTypes.CreateScenario:
-      let currentList = state.Scenario;
-      action.payload.Scenario.scenarioId = state.Scenario.length;
-      currentList.push(action.payload.Scenario);
+      let currentList = state.scenario;
+      action.payload.scenario.scenarioId = state.scenario.length;
+      currentList.push(action.payload.scenario);
       return {
         ...state,
-        Scenario : currentList
+        scenario : currentList
       };
     case ScenarioActionTypes.DeleteScenario:  
-      const list = state.Scenario;
-      list.splice(state.Scenario.indexOf(action.payload.Scenario),1);
+      const list = state.scenario;
+      list.splice(state.scenario.indexOf(action.payload.scenario),1);
       return {
         ...state,
-        Scenario : list
+        scenario : list
       }
 
     case ScenarioActionTypes.UpdateScenario:  
-    const updatedList = state.Scenario;
-    const itemToUpdate = state.Scenario.find( x => x.scenarioId === action.payload.Scenario.scenarioId);
-    updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.Scenario;
+    const updatedList = state.scenario;
+    const itemToUpdate = state.scenario.find( x => x.scenarioId === action.payload.scenario.scenarioId);
+    updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.scenario;
     return {
       ...state,
-      Scenario : updatedList
+      scenario : updatedList
     }
 
     default:

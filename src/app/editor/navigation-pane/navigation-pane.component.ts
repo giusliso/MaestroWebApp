@@ -10,6 +10,7 @@ import { first } from 'rxjs/operators';
 import { EditorService } from '../services/editor.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { LayoutActionTypes } from 'src/app/store/layout-store/actions';
+import { NgModel } from '@angular/forms';
 @Component({
   selector: 'app-navigation-pane',
   templateUrl: './navigation-pane.component.html',
@@ -19,6 +20,9 @@ import { LayoutActionTypes } from 'src/app/store/layout-store/actions';
 export class NavigationPaneComponent {
   @ViewChild('panelMenu')
   panelMenu: Listbox;
+  @ViewChild('panelMenu', { read: NgModel}) 
+  model: NgModel;
+
   items;
   selectedItem;
   previoustItemSelected;
@@ -32,20 +36,26 @@ export class NavigationPaneComponent {
     }
 
     select(event){
-      this.selectedItem = null;
+      let url;
       switch(event.value.type){
         case Area.Scene:
-          this.editor$.tryNavigate(() => this.router.navigateByUrl('scena'));
+          url = 'scena';
         break;
         case Area.Scenarios:
-           this.editor$.tryNavigate(() => this.router.navigateByUrl('scenario'));
+          url = 'scenario';
         break;
         case Area.LearningPath:
-           this.editor$.tryNavigate(() => this.router.navigateByUrl('learning-path')); 
+          url = 'learning-path';
         break;
         case Area.Target:
-           this.editor$.tryNavigate(() => this.router.navigateByUrl('target'));
+          url= 'target';
         break;
+        case Area.Contents:
+          url= 'content';
+        break;
+      }
+      if(!this.editor$.tryNavigate(() => this.router.navigateByUrl(url))){
+        this.model.control.setValue(this.previoustItemSelected);
       }
     }
 
@@ -81,7 +91,8 @@ export class NavigationPaneComponent {
           });
         this.update$.pipe(select(LayoutActionTypes.NavigationDenied))
           .subscribe( () => {
-            this.selectedItem = null;
+
+            
           });
     }
 }

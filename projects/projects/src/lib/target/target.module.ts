@@ -9,9 +9,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { WorkingAreaComponent } from './containers/working-area/working-area.component';
 import { TargetSummaryComponent } from './containers/target-summary/target-summary.component';
 import { ProjectsService } from '../services/projects.service';
+import { LinkContentTabComponent } from './containers/link-content-tab';
 
 @NgModule({
-  declarations: [TargetAreaComponent, TargetDetailsComponent, WorkingAreaComponent, TargetSummaryComponent],
+  declarations: [TargetAreaComponent, TargetDetailsComponent, WorkingAreaComponent, TargetSummaryComponent, LinkContentTabComponent],
   imports: [CommonModule, SharedModule, StoreModule.forFeature('target', reducers.reducer), EditorModule],
   providers: [ProjectsService],
   exports: [WorkingAreaComponent]

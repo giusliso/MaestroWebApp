@@ -43,9 +43,10 @@ export class LearningPathDetailsComponent implements OnInit {
     this.targetTab.fillTables(this.currentItem);
   }
 
-  updateChilds(LearningPath){
-    this.currentItem = LearningPath;
-    this.summaryTab.fillSummary(LearningPath);
+  updateChilds(learningPath){
+    this.currentItem = learningPath;
+    this.summaryTab.fillSummary(learningPath);
+    this.targetTab.fillTables(learningPath);
   }
 
   ngOnInit() {

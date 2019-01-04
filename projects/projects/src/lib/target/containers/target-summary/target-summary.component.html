@@ -3,7 +3,7 @@
         <div class="label">
            <p > Name *:</p>
         </div>
-        <input id="input" type="text" pInputText formControlName="name" maxlength="20">
+        <input class="input" type="text" pInputText formControlName="name" maxlength="20">
     </div>
     <div class="row">
         <div class="label">
@@ -13,13 +13,12 @@
    </div>
    <div class="row">
         <div class="label">
-          <p>Position:</p>
+          <p>Positions:</p>
         </div>
    </div>   
-   <div class="row">
+   <div class="row" *ngIf = "currentTarget !== undefined">
         <div class="label">
-            <span>X:{{positionX}} </span> 
-            <span>Y: {{positionX}} </span>
+           <p>X: {{currentTarget.coordinateX | number:'1.0-0'}} - Y: {{currentTarget.coordinateY | number:'1.0-0'}}</p>
         </div>
-   </div>  
+   </div>
 </form>

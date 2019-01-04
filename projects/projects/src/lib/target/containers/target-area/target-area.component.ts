@@ -5,12 +5,12 @@ import {State as LayoutState} from 'src/app/store/layout-store/reducer';
 import { Target } from '../../../../api';
 import { TargetState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
-import { CreateTarget, TargetActionTypes, DeleteTarget } from '../../actions';
+import { CreateTarget, TargetActionTypes, DeleteTarget, UpdateTarget } from '../../actions';
 import { Subscription } from 'rxjs';
 import { first, filter } from 'rxjs/operators';
 import { WorkingAreaComponent } from '../working-area';
 import { ProjectsService } from '../../../services/projects.service';
-import { DeleteItemAction, LayoutActionTypes, ItemSelectAction } from 'src/app/store/layout-store/actions';
+import { DeleteItemAction, LayoutActionTypes, ItemSelectAction, DetailsPersistAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
 import { Area } from 'src/app/core';
 import { TargetDetailsComponent } from '../target-details';
 @Component({
@@ -46,6 +46,7 @@ export class TargetAreaComponent implements OnInit {
     private update$: Actions,
     private project$: ProjectsService
     ) {
+      // Load targets
       this.layoutStore.pipe(first(), select('layout', 'currentScene'))
         .subscribe(scene => this.currentScene = scene);
       this.targetStore.pipe(
@@ -62,6 +63,15 @@ export class TargetAreaComponent implements OnInit {
        ));
       
    }
+
+  public save(event: Event) {
+    this.detailsArea.save();
+  }
+
+  public revert(event: Event) {
+    this.detailsArea.revert();
+    this.layoutStore.dispatch(new DetailsPersistAction({ item: undefined }));
+  }
 
   clearTarget (node) {
     
@@ -82,6 +92,17 @@ export class TargetAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Subscription when Target is updated
+    this._subscriptions.push(this.update$
+      .pipe(ofType(TargetActionTypes.UpdateTarget))
+        .subscribe((target:UpdateTarget) => {
+        this.layoutStore.dispatch(
+          new UpdateItemAction({item:
+            {value:{id:target.payload.target.targetId, name: target.payload.target.name}}}
+            ));
+        this.layoutStore.dispatch(new DetailsPersistAction({item: null}))
+        }));
+
     this._subscriptions.push(
       this.update$
       .pipe(ofType(TargetActionTypes.CreateTarget))

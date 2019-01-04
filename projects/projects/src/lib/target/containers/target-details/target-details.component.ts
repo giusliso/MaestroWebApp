@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {State as LayoutState} from 'src/app/store/layout-store/reducer';
-import { Actions, ofType } from '@ngrx/effects';
-import { LayoutActionTypes, ItemSelectAction } from 'src/app/store/layout-store/actions';
+import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { Target } from '../../../../api';
 import { TargetState } from '../../reducers';
-import { CreateTarget } from '../../actions';
-import { TargetSummaryComponent } from '../target-summary/target-summary.component';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { TargetSummaryComponent } from '../target-summary';
+import { UpdateTarget } from '../../actions';
+import { LinkContentTabComponent } from '../link-content-tab';
+
 @Component({
   selector: 'lib-target-details',
   templateUrl: './target-details.component.html',
@@ -17,18 +16,38 @@ import { first } from 'rxjs/operators';
 export class TargetDetailsComponent implements OnInit {
   @ViewChild('summaryTab')
   summaryTab: TargetSummaryComponent;
-  private _subscriptions: Subscription[] = [];
+
+  @ViewChild('contentTab')
+  contentTab: LinkContentTabComponent;
+  
+
+  private currentItem: Target;
 
   constructor(
-    private layoutStore: Store<LayoutState>,
-    private targetStore: Store<TargetState>,
-    private update$: Actions,
+    private layoutState: Store<LayoutState>,
+    private targetState: Store<TargetState>
   ) {
+    
+ 
+  }
 
+  save() {
+    const updatedTarget = this.summaryTab.getSummary();
+    if(updatedTarget !== null) {
+      updatedTarget.contents = this.contentTab.getList();
+      this.targetState.dispatch(new UpdateTarget({target: this.summaryTab.getSummary()}));
+    }
+  }
+
+  revert () {
+    this.summaryTab.fillSummary(this.currentItem);
+    this.contentTab.fillTables(this.currentItem);
   }
 
   updateChilds(target){
+    this.currentItem = target;
     this.summaryTab.fillSummary(target);
+    this.contentTab.fillTables(target);
   }
 
   ngOnInit() {

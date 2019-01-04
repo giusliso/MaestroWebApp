@@ -74,7 +74,8 @@ export class WorkingAreaComponent implements OnInit {
         const newTarget: Target = {
           coordinateX: x,
           coordinateY: y,
-          sceneId : sceneArea.value.id
+          sceneId : sceneArea.value.id,
+          contents: []
         };
 
         this.targetStore.dispatch(new CreateTarget({ target: newTarget}))
@@ -163,11 +164,9 @@ export class WorkingAreaComponent implements OnInit {
     }
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
-      document.getElementById('workingCanvas').style.background = 'url(' +  fileReader.result + ')';
+      document.getElementById('workingCanvas').style.background = 'url(' +  fileReader.result + ') no-repeat center';
       document.getElementById('workingCanvas').style.backgroundSize = '35vw';
-      document.getElementById('workingCanvas').style.backgroundRepeat = 'no-repeat';
       document.getElementById('workingCanvas').parentElement.clientWidth;
-      //ctx.canvas.height = window.innerHeight;
     }
     if((file as Blob) !== undefined){
       fileReader.readAsDataURL(file);
