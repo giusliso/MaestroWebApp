@@ -4,7 +4,6 @@ import { ContentActionTypes } from '../actions/content.actions';
 
 @Injectable()
 export class ContentEffects {
-
   @Effect()
   loadFoos$ = this.actions$.pipe(ofType(ContentActionTypes.CreateContent));
 

@@ -1,1 +1,1 @@
-export * from './graphic.module'
+export * from './graphic.module';

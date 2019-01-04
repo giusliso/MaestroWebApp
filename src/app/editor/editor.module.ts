@@ -10,16 +10,16 @@ import { SharedModule } from '../shared/shared.module';
 import { ProjectsModule } from '../../../projects/projects/src/lib/projects.module';
 import { MenuComponent } from './menu/menu.component';
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule
-  ],
+  imports: [CommonModule, SharedModule],
   declarations: [
     DashboardComponent,
     OrganizerComponent,
     DetailsComponent,
     NavigationPaneComponent,
-    EditorContainerComponent, ImportComponent, MenuComponent],
+    EditorContainerComponent,
+    ImportComponent,
+    MenuComponent
+  ],
   exports: [
     DashboardComponent,
     OrganizerComponent,
@@ -28,4 +28,4 @@ import { MenuComponent } from './menu/menu.component';
     EditorContainerComponent
   ]
 })
-export class EditorModule { }
+export class EditorModule {}

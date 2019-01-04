@@ -33,7 +33,7 @@ export function reducer(state = initialState, action: LayoutActions): State {
     case LayoutActionTypes.ItemSelect: {
       return {
         ...state,
-        organizerSelection: action.payload.item,
+        organizerSelection: action.payload.item
       };
     }
     case LayoutActionTypes.AddItem: {
@@ -79,7 +79,7 @@ export function reducer(state = initialState, action: LayoutActions): State {
     case LayoutActionTypes.ItemSelect: {
       return {
         ...state,
-        organizerSelection: action.payload.item,
+        organizerSelection: action.payload.item
       };
     }
     default: {

@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter  } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import { Target } from '../../api';
 
@@ -9,14 +9,14 @@ export class ProjectsService {
   @Output() drawTargetEvent = new EventEmitter<Target>();
   @Output() removeTargetEvent = new EventEmitter<Target>();
 
-  constructor() { }
+  constructor() {}
 
-  drawTarget(target){
+  drawTarget(target) {
     this.drawTargetEvent.emit(target);
   }
 
-  removeTarget(target: Target){
-    if(target !== null){
+  removeTarget(target: Target) {
+    if (target !== null) {
       this.removeTargetEvent.emit(target);
     }
   }

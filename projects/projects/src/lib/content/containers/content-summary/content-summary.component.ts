@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Content } from '../../../../api';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { Subscription } from 'rxjs';
 import { Dialog } from 'primeng/dialog';
@@ -11,12 +11,10 @@ import { Dialog } from 'primeng/dialog';
   templateUrl: './content-summary.component.html',
   styleUrls: ['./content-summary.component.css']
 })
-
 export class ContentSummaryComponent implements OnInit {
-
   @ViewChild('errorDialog')
   errorDialog: Dialog;
-  TextErrorDialog = "";
+  TextErrorDialog = '';
   displayErrorDialog = false;
 
   @ViewChild('summaryForm')
@@ -25,65 +23,60 @@ export class ContentSummaryComponent implements OnInit {
   changeSubscription: Subscription;
   constructor(private layoutState: Store<LayoutState>) {
     this.initForm();
-   }
+  }
 
-  fillSummary(content: Content){
+  fillSummary(content: Content) {
     this.clearData();
-    if(content === undefined){
+    if (content === undefined) {
       this.summaryForm.reset();
       this.summaryForm.disable();
-    }
-    else {
+    } else {
       this.currentContent = content;
       this.summaryForm.controls['name'].patchValue(content['name']);
-      this.summaryForm.controls['description'].patchValue(content['description']);
+      this.summaryForm.controls['description'].patchValue(
+        content['description']
+      );
       this.summaryForm.controls['filename'].patchValue(content.file.name);
       this.summaryForm.enable();
       this.summaryForm.controls['filename'].disable();
-    
-        this.changeSubscription = this.summaryForm.
-        valueChanges
-          .subscribe(
-            () => this.layoutState
-              .dispatch(new DetailsChangeAction({item: null})));      
+
+      this.changeSubscription = this.summaryForm.valueChanges.subscribe(() =>
+        this.layoutState.dispatch(new DetailsChangeAction({ item: null }))
+      );
     }
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.clearData();
   }
 
   getSummary() {
-    if(this.summaryForm.valid){
+    if (this.summaryForm.valid) {
       this.currentContent.name = this.summaryForm.controls['name'].value;
-      this.currentContent.description = this.summaryForm.controls['description'].value;
+      this.currentContent.description = this.summaryForm.controls[
+        'description'
+      ].value;
       return this.currentContent;
-    }
-    else {
+    } else {
       let wrongFields = [];
-      Object.keys(this.summaryForm.controls).forEach(
-        key => {
-          if(this.summaryForm.controls[key].status === 'INVALID'){
-            wrongFields.push(key);
-          }
+      Object.keys(this.summaryForm.controls).forEach(key => {
+        if (this.summaryForm.controls[key].status === 'INVALID') {
+          wrongFields.push(key);
         }
-      )
+      });
       if (wrongFields.length > 1) {
-        this.TextErrorDialog = "The following fields are required : \n";
-        wrongFields.forEach( item => this.TextErrorDialog += item + "\n");
-      }
-      else {
-        this.TextErrorDialog = "The following field is required : " + wrongFields[0];
+        this.TextErrorDialog = 'The following fields are required : \n';
+        wrongFields.forEach(item => (this.TextErrorDialog += item + '\n'));
+      } else {
+        this.TextErrorDialog =
+          'The following field is required : ' + wrongFields[0];
       }
       this.displayErrorDialog = true;
       return null;
     }
   }
-
 
   public clearData() {
     if (this.changeSubscription !== undefined) {
@@ -91,7 +84,7 @@ export class ContentSummaryComponent implements OnInit {
     }
   }
 
-  private initForm(){
+  private initForm() {
     this.summaryForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -99,10 +92,8 @@ export class ContentSummaryComponent implements OnInit {
         Validators.maxLength(20)
       ]),
       description: new FormControl(''),
-      filename: new FormControl(''),
+      filename: new FormControl('')
     });
     this.summaryForm.disable();
   }
-
-
 }

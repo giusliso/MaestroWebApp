@@ -10,10 +10,7 @@ describe('LearningPathEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        LearningPathEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [LearningPathEffects, provideMockActions(() => actions$)]
     });
 
     effects = TestBed.get(LearningPathEffects);

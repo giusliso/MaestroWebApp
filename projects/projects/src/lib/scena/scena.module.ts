@@ -7,7 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { EditorModule } from 'src/app/editor/editor.module';
 import { TargetModule } from '../target';
 import { StoreModule } from '@ngrx/store';
-import  * as  reducers from './reducers';
+import * as reducers from './reducers';
 import { ScenaCreateDialogComponent } from './containers/scena-create-dialog/scena-create-dialog.component';
 @NgModule({
   imports: [
@@ -17,6 +17,11 @@ import { ScenaCreateDialogComponent } from './containers/scena-create-dialog/sce
     TargetModule,
     StoreModule.forFeature('scene', reducers.reducer)
   ],
-  declarations: [ScenaAreaComponent, ScenaDetailsComponent, ScenaSummaryComponent, ScenaCreateDialogComponent]
+  declarations: [
+    ScenaAreaComponent,
+    ScenaDetailsComponent,
+    ScenaSummaryComponent,
+    ScenaCreateDialogComponent
+  ]
 })
-export class ScenaModule { }
+export class ScenaModule {}

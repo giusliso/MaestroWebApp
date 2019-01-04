@@ -1,11 +1,20 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import {SelectItem} from 'primeng/api';
-import { LayoutStoreModule, LayoutStoreActions } from 'src/app/store/layout-store';
-import {MenuItem} from 'primeng/api';
+import { SelectItem } from 'primeng/api';
+import {
+  LayoutStoreModule,
+  LayoutStoreActions
+} from 'src/app/store/layout-store';
+import { MenuItem } from 'primeng/api';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { Actions, ofType } from '@ngrx/effects';
-import { LayoutActionTypes, AddItemAction, ItemSelectAction, DeleteItemAction, UpdateItemAction } from 'src/app/store/layout-store/actions';
+import {
+  LayoutActionTypes,
+  AddItemAction,
+  ItemSelectAction,
+  DeleteItemAction,
+  UpdateItemAction
+} from 'src/app/store/layout-store/actions';
 import { ContextMenu } from 'primeng/contextmenu';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Listbox } from 'primeng/listbox';
@@ -20,7 +29,6 @@ export class OrganizerComponent implements OnInit {
   @Input()
   props: SelectItem[];
 
-
   @Input()
   contextMenuProps: MenuItem[] = [];
   selectedItem: any;
@@ -32,77 +40,78 @@ export class OrganizerComponent implements OnInit {
   organizerList: Listbox;
 
   public rightClickedNode;
-  private  previoustItemSelected:any;
+  private previoustItemSelected: any;
 
   constructor(
     private layoutStore: Store<LayoutState>,
     private update$: Actions,
     private editor$: EditorService
   ) {
+    this.update$
+      .pipe(ofType(LayoutActionTypes.NavigationDenied))
+      .subscribe(() => (this.selectedItem = this.previoustItemSelected));
 
-    this.update$.pipe(ofType(LayoutActionTypes.NavigationDenied))
-          .subscribe( () => this.selectedItem = this.previoustItemSelected);
+    this.update$
+      .pipe(ofType(LayoutActionTypes.AddItem))
+      .subscribe((node: AddItemAction) => {
+        this.props.push(node.payload.item);
+        this.props = [...this.props];
+        this.selectItem(this.props[this.props.length - 1]);
+      });
 
-    this.update$.pipe(ofType(LayoutActionTypes.AddItem))
-      .subscribe(
-        (node: AddItemAction) => {
-          this.props.push(node.payload.item);
-          this.props = [...this.props];
-          this.selectItem(this.props[this.props.length-1]);
+    this.update$
+      .pipe(ofType(LayoutActionTypes.DeleteItem))
+      .subscribe((node: DeleteItemAction) => {
+        const itemToRemove = this.props.find(
+          x => x.value.id === node.payload.item.id
+        );
+        const idxItemToRemove = this.props.indexOf(itemToRemove);
+        this.props.splice(idxItemToRemove, 1);
+        this.props = [...this.props];
+        if (this.props.length > 1) {
+          this.selectItem(this.props[idxItemToRemove - 1]);
+        } else if (this.props.length > 0) {
+          this.selectItem(this.props[0]);
         }
-      );
+      });
 
-    this.update$.pipe(ofType(LayoutActionTypes.DeleteItem))
-      .subscribe(
-        (node: DeleteItemAction) => {
-
-          const itemToRemove = this.props.find( x => x.value.id === node.payload.item.id);
-          const idxItemToRemove = this.props.indexOf(itemToRemove);
-          this.props.splice(idxItemToRemove, 1);
-          this.props = [...this.props];
-          if(this.props.length > 1){
-            this.selectItem(this.props[idxItemToRemove - 1]);
-          } else if (this.props.length > 0) {
-            this.selectItem(this.props[0]);
-          }
-        }
-      );
-
-    this.update$.pipe(ofType(LayoutActionTypes.UpdateItem))
-    .subscribe(
-      (node: UpdateItemAction) => {
-        console.log(this.props);
-        const itemToUpdate = this.props.find( x => x.value.id === node.payload.item.value.id);
+    this.update$
+      .pipe(ofType(LayoutActionTypes.UpdateItem))
+      .subscribe((node: UpdateItemAction) => {
+        const itemToUpdate = this.props.find(
+          x => x.value.id === node.payload.item.value.id
+        );
         const idxItemToUpdate = this.props.indexOf(itemToUpdate);
         this.props[idxItemToUpdate] = node.payload.item;
         this.props = [...this.props];
-        this.selectItem(node.payload.item)
-      }
-    );
+        this.selectItem(node.payload.item);
+      });
   }
 
   isContextMenuVisible(): boolean {
-    if((this.props === [] || this.props === undefined) ||
-    (this.contextMenuProps === [])){
+    if (
+      this.props === [] ||
+      this.props === undefined ||
+      this.contextMenuProps === []
+    ) {
       return false;
     }
     return true;
   }
 
-  select(item){
+  select(item) {
     this.editor$.tryNavigate(() => this.selectItem(item));
   }
 
-  selectItem(itemToSelect:any){
+  selectItem(itemToSelect: any) {
     this.previoustItemSelected = this.selectedItem;
     this.selectedItem = itemToSelect.value;
-    this.layoutStore.dispatch(new ItemSelectAction({item: itemToSelect}));
+    this.layoutStore.dispatch(new ItemSelectAction({ item: itemToSelect }));
   }
 
   ngOnInit() {
-    if(this.props.length > 0){
+    if (this.props.length > 0) {
       this.selectItem(this.props[0]);
     }
   }
-
 }

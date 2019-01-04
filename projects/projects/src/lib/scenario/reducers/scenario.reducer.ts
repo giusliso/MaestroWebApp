@@ -1,20 +1,24 @@
 import { Action } from '@ngrx/store';
-import { ScenarioActions, ScenarioActionTypes } from '../actions/scenario.actions';
+import {
+  ScenarioActions,
+  ScenarioActionTypes
+} from '../actions/scenario.actions';
 import { Scenario } from '../../../api';
 
 export interface ScenarioState {
-  scenario: Scenario[],
-  error:boolean
+  scenario: Scenario[];
+  error: boolean;
 }
 
 export const initialState: ScenarioState = {
-  scenario : [],
-  error : false
-
+  scenario: [],
+  error: false
 };
 
-export function reducer(state = initialState, action: ScenarioActions): ScenarioState {
-
+export function reducer(
+  state = initialState,
+  action: ScenarioActions
+): ScenarioState {
   switch (action.type) {
     case ScenarioActionTypes.LoadScenarios:
       return state;
@@ -24,24 +28,26 @@ export function reducer(state = initialState, action: ScenarioActions): Scenario
       currentList.push(action.payload.scenario);
       return {
         ...state,
-        scenario : currentList
+        scenario: currentList
       };
-    case ScenarioActionTypes.DeleteScenario:  
+    case ScenarioActionTypes.DeleteScenario:
       const list = state.scenario;
-      list.splice(state.scenario.indexOf(action.payload.scenario),1);
+      list.splice(state.scenario.indexOf(action.payload.scenario), 1);
       return {
         ...state,
-        scenario : list
-      }
+        scenario: list
+      };
 
-    case ScenarioActionTypes.UpdateScenario:  
-    const updatedList = state.scenario;
-    const itemToUpdate = state.scenario.find( x => x.scenarioId === action.payload.scenario.scenarioId);
-    updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.scenario;
-    return {
-      ...state,
-      scenario : updatedList
-    }
+    case ScenarioActionTypes.UpdateScenario:
+      const updatedList = state.scenario;
+      const itemToUpdate = state.scenario.find(
+        x => x.scenarioId === action.payload.scenario.scenarioId
+      );
+      updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.scenario;
+      return {
+        ...state,
+        scenario: updatedList
+      };
 
     default:
       return state;

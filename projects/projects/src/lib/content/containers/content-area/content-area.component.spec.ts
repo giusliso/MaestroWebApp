@@ -8,9 +8,8 @@ describe('ContentAreaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentAreaComponent ]
-    })
-    .compileComponents();
+      declarations: [ContentAreaComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

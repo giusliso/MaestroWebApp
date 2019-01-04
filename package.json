@@ -6,9 +6,12 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "prettier-check": "prettier-check --parser typescript --single-quote src/**/*.ts && prettier-check --parser typescript --single-quote e2e/**/*.ts && prettier-check --parser typescript --single-quote projects/**/*.ts",
+    "prettier-write": "prettier --parser typescript --single-quote --write src/**/*.ts && prettier --parser typescript --write --single-quote e2e/**/*.ts && prettier --parser typescript --single-quote --write projects/**/*.ts",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "inst": "npm install"
+    "inst": "npm install",
+    "buildWebUISolution": "npm run inst && npm run test && npm run lint && npm run prettier-write && npm run prettier-check && npm run build-prod"
   },
   "private": true,
   "dependencies": {
@@ -55,6 +58,7 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^4.1.0",
+    "prettier": "^1.15.3",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tsickle": ">=0.29.0",

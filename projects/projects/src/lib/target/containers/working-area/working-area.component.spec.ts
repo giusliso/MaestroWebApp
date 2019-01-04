@@ -8,9 +8,8 @@ describe('WorkingAreaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WorkingAreaComponent ]
-    })
-    .compileComponents();
+      declarations: [WorkingAreaComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

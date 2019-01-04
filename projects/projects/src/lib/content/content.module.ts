@@ -8,7 +8,7 @@ import { EditorModule } from 'src/app/editor/editor.module';
 import { TargetModule } from '../target';
 import { ContentCreateDialogComponent } from './containers';
 import { StoreModule } from '@ngrx/store';
-import  * as  reducers from './reducers';
+import * as reducers from './reducers';
 
 @NgModule({
   imports: [
@@ -19,10 +19,10 @@ import  * as  reducers from './reducers';
     StoreModule.forFeature('content', reducers.reducer)
   ],
   declarations: [
-    ContentAreaComponent, 
-    ContentDetailsComponent, 
-    ContentSummaryComponent, 
+    ContentAreaComponent,
+    ContentDetailsComponent,
+    ContentSummaryComponent,
     ContentCreateDialogComponent
   ]
 })
-export class ContentModule { }
+export class ContentModule {}

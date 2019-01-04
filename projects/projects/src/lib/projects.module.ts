@@ -21,7 +21,7 @@ import { ContentModule } from './content/content.module';
   ],
   declarations: [ProjectsComponent],
   providers: [ProjectsService],
-  exports: [    
+  exports: [
     ScenaModule,
     TargetModule,
     ScenarioModule,
@@ -29,4 +29,4 @@ import { ContentModule } from './content/content.module';
     ContentModule
   ]
 })
-export class ProjectsModule { }
+export class ProjectsModule {}

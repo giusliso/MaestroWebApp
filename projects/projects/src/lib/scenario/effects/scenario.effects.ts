@@ -4,7 +4,6 @@ import { ScenarioActionTypes } from '../actions/scenario.actions';
 
 @Injectable()
 export class scenarioEffects {
-
   @Effect()
   loadFoos$ = this.actions$.pipe(ofType(ScenarioActionTypes.CreateScenario));
 

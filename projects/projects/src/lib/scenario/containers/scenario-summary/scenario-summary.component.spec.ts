@@ -8,9 +8,8 @@ describe('ScenarioSummaryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScenarioSummaryComponent ]
-    })
-    .compileComponents();
+      declarations: [ScenarioSummaryComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

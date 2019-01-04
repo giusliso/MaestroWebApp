@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ContentSummaryComponent } from '../content-summary';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { Content } from '../../../../api';
 import { ContentState } from '../../reducers';
@@ -21,35 +21,27 @@ export class ContentDetailsComponent implements OnInit {
   constructor(
     private layoutState: Store<LayoutState>,
     private ContentState: Store<ContentState>
-  ) {
-    
- 
-  }
-
+  ) {}
 
   save() {
-    let updatedContent = this.summaryTab.getSummary();
-    if(updatedContent !== null) {
-
-      this.ContentState.dispatch(new UpdateContent({content: updatedContent}));
+    const updatedContent = this.summaryTab.getSummary();
+    if (updatedContent !== null) {
+      this.ContentState.dispatch(
+        new UpdateContent({ content: updatedContent })
+      );
     }
   }
 
-  revert () {
+  revert() {
     this.summaryTab.fillSummary(this.currentItem);
   }
 
-  updateChilds(content){
+  updateChilds(content) {
     this.currentItem = content;
     this.summaryTab.fillSummary(content);
   }
 
-  ngOnInit() {
-  
-  }
+  ngOnInit() {}
 
-  ngOnDestroy(){
-
-  }
-
+  ngOnDestroy() {}
 }

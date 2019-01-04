@@ -8,9 +8,8 @@ describe('LearningPathSummaryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LearningPathSummaryComponent ]
-    })
-    .compileComponents();
+      declarations: [LearningPathSummaryComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

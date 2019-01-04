@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,9 +16,16 @@ import { ContextMenuModule } from 'ngx-contextmenu';
     ngfModule,
     GraphicModule,
     RootStoreModule,
-    ContextMenuModule.forRoot() 
+    ContextMenuModule.forRoot()
   ],
   declarations: [],
-  exports: [ngfModule, GraphicModule, FormsModule, RootStoreModule, ReactiveFormsModule, ContextMenuModule ]
+  exports: [
+    ngfModule,
+    GraphicModule,
+    FormsModule,
+    RootStoreModule,
+    ReactiveFormsModule,
+    ContextMenuModule
+  ]
 })
-export class SharedModule { }
+export class SharedModule {}

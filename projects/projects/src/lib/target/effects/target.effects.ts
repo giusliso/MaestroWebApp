@@ -4,7 +4,6 @@ import { TargetActionTypes } from '../actions/target.actions';
 
 @Injectable()
 export class TargetEffects {
-
   @Effect()
   loadFoos$ = this.actions$.pipe(ofType(TargetActionTypes.LoadTargets));
 

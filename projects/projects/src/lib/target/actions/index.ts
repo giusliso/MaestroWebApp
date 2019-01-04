@@ -1,1 +1,1 @@
-export * from  './target.actions';
+export * from './target.actions';

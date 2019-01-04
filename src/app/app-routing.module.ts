@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { 
+import {
   ContentAreaComponent,
-  TargetAreaComponent, 
-  ScenaAreaComponent, 
-  ScenarioAreaComponent, 
-  LearningPathAreaComponent } from '../../projects/projects/src/public_api';
+  TargetAreaComponent,
+  ScenaAreaComponent,
+  ScenarioAreaComponent,
+  LearningPathAreaComponent
+} from '../../projects/projects/src/public_api';
 import { EditorContainerComponent } from './editor/editor-container/editor-container.component';
 
 const routes: Routes = [
@@ -36,13 +37,11 @@ const routes: Routes = [
     component: ContentAreaComponent,
     pathMatch: 'full'
   },
-  { path: 'demo', 
-    component: EditorContainerComponent
-  }
-]
+  { path: 'demo', component: EditorContainerComponent }
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
   declarations: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

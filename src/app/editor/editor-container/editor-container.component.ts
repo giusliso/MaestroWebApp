@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store, select, State } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { Actions, ofType } from '@ngrx/effects';
 import { LayoutActionTypes } from 'src/app/store/layout-store/actions';
 
@@ -25,20 +25,21 @@ export class EditorContainerComponent implements OnInit {
   public revert = new EventEmitter();
 
   public displayDialog = false;
-  public TextDialog = "";
-  
+  public TextDialog = '';
+
   constructor(
     private layoutState: Store<LayoutState>,
-    private update$: Actions) {
-    this.update$.pipe(ofType(LayoutActionTypes.NavigationDenied))
+    private update$: Actions
+  ) {
+    this.update$
+      .pipe(ofType(LayoutActionTypes.NavigationDenied))
       .subscribe(() => {
-          this.displayDialog = true;
-          this.TextDialog = "Navigation Denied";
+        this.displayDialog = true;
+        this.TextDialog = 'Navigation Denied';
       });
-   }
-
-  ngOnInit() {
   }
+
+  ngOnInit() {}
 
   onSave(event: Event) {
     this.save.emit('Save');
@@ -47,5 +48,4 @@ export class EditorContainerComponent implements OnInit {
   onRevert(event: Event) {
     this.revert.emit('Revert');
   }
-
 }

@@ -1,16 +1,31 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { LayoutStoreModule, LayoutStoreActions } from 'src/app/store/layout-store';
+import {
+  LayoutStoreModule,
+  LayoutStoreActions
+} from 'src/app/store/layout-store';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { Scenario } from '../../../../api';
 import { ScenarioState } from '../../reducers';
 import { Actions, ofType } from '@ngrx/effects';
 import { Area } from 'src/app/core';
-import { CreateScenario, UpdateScenario, DeleteScenario, ScenarioActionTypes } from '../../actions';
+import {
+  CreateScenario,
+  UpdateScenario,
+  DeleteScenario,
+  ScenarioActionTypes
+} from '../../actions';
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ScenarioDetailsComponent } from '../scenario-details';
-import { LayoutActionTypes, ItemSelectAction, DetailsPersistAction, LandMarkSetAction, UpdateItemAction, DeleteItemAction } from 'src/app/store/layout-store/actions';
+import {
+  LayoutActionTypes,
+  ItemSelectAction,
+  DetailsPersistAction,
+  LandMarkSetAction,
+  UpdateItemAction,
+  DeleteItemAction
+} from 'src/app/store/layout-store/actions';
 import { ScenarioCreateDialogComponent } from '../scenario-create-dialog';
 
 @Component({
@@ -19,102 +34,129 @@ import { ScenarioCreateDialogComponent } from '../scenario-create-dialog';
   styleUrls: ['./scenario-area.component.scss']
 })
 export class ScenarioAreaComponent implements OnInit {
+  public organizerProps = [];
+  @ViewChild(ScenarioDetailsComponent)
+  detailsArea: ScenarioDetailsComponent;
 
-   public organizerProps = [];
-   @ViewChild(ScenarioDetailsComponent)
-   detailsArea: ScenarioDetailsComponent;
+  @ViewChild(ScenarioCreateDialogComponent)
+  createScenaDialog: ScenarioCreateDialogComponent;
 
-   @ViewChild(ScenarioCreateDialogComponent)
-   createScenaDialog: ScenarioCreateDialogComponent;
+  public currentScene;
 
-   public currentScene; 
+  public menuProps = [
+    {
+      label: 'File',
+      items: [{ label: 'New Scenario', command: () => this.createScenario() }]
+    }
+  ];
 
-   public menuProps =  
-   [  
-    {label: 'File',
-     items:[
-        { label: 'New Scenario', 
-          command: () => this.createScenario()
-        },
-     ]},
-   ];
-
-   public contextMenu  =  
-   [ 
-     { 
-       name: 'Delete Scenario',
-       visible: (item) => {
-         return true;
-       },
-       enabled: true,
-       execute: (node) => this.deleteScenario(node.item)
-     }
-   ];
-   private _subscriptions: Subscription[] = [];
+  public contextMenu = [
+    {
+      name: 'Delete Scenario',
+      visible: item => {
+        return true;
+      },
+      enabled: true,
+      execute: node => this.deleteScenario(node.item)
+    }
+  ];
+  private _subscriptions: Subscription[] = [];
   constructor(
     private layoutStore: Store<LayoutState>,
     private scenarioStore: Store<Scenario>,
-    private update$: Actions,
-    ) {
+    private update$: Actions
+  ) {
+    // Load scenarios
+    this.layoutStore
+      .pipe(
+        first(),
+        select('layout', 'currentScene')
+      )
+      .subscribe(scene => (this.currentScene = scene));
 
-      // Load scenarios
-      this.layoutStore.pipe(first(), select('layout', 'currentScene'))
-        .subscribe(scene => this.currentScene = scene);
-     
-      this.scenarioStore.pipe(first(), select('scenario', 'scenario'))
-      .subscribe(scenarios => scenarios
-        .filter( scenario => scenario.sceneId === this.currentScene.value.id)
-        .forEach(
-          (Scenario: Scenario) => {
-          this.organizerProps.push(
-            {value:{id:Scenario.scenarioId, name: Scenario.name}}  
-          )}
-      ));
-
-      // Subscription when scenario is updated
-      this._subscriptions.push(this.update$
-        .pipe(ofType(ScenarioActionTypes.UpdateScenario))
-         .subscribe((Scenario:UpdateScenario) => {
-          this.layoutStore.dispatch(
-            new UpdateItemAction({item:
-             {value:{id:Scenario.payload.scenario.scenarioId, name: Scenario.payload.scenario.name}}}
-             ));
-          this.layoutStore.dispatch(new DetailsPersistAction({item: null}))
-         }));
-
-      // subscription when new scenario is created.
-      this._subscriptions.push(this.update$
-        .pipe(ofType(ScenarioActionTypes.CreateScenario))
-         .subscribe((Scenario:CreateScenario) => this.fillOrganizer(Scenario.payload.scenario)));
-
-      // Subscription for update details
-      this._subscriptions.push(
-        this.update$.pipe(ofType(LayoutActionTypes.ItemSelect))
-        .subscribe((selection: ItemSelectAction) => {
-          this.scenarioStore.pipe(select('scenario', 'scenario'))
-            .subscribe((Scenarios: Scenario[]) => {
-                const Scenario = Scenarios.find(Scenario => Scenario.scenarioId === selection.payload.item.value.id);
-                this.detailsArea.updateChilds(Scenario);
+    this.scenarioStore
+      .pipe(
+        first(),
+        select('scenario', 'scenario')
+      )
+      .subscribe(scenarios =>
+        scenarios
+          .filter(x => x.sceneId === this.currentScene.value.id)
+          .forEach((scenario: Scenario) => {
+            this.organizerProps.push({
+              value: { id: scenario.scenarioId, name: scenario.name }
             });
-        })
+          })
       );
 
-      // Action to do whene there aren't Scenarios after deletion
-      this._subscriptions.push(
-        this.update$.pipe(ofType(ScenarioActionTypes.DeleteScenario))
-         .subscribe(() =>   this.scenarioStore.pipe(first(), select('scenario', 'scenario'))
-         .subscribe(
-           (Scenarios: Scenario[]) => {
-             if(Scenarios.length === 0){
-               this.detailsArea.updateChilds(undefined);
-               this.layoutStore.dispatch(new LandMarkSetAction({landmark: undefined}));
-             }
-           }
-         )));
-   }
+    // Subscription when scenario is updated
+    this._subscriptions.push(
+      this.update$
+        .pipe(ofType(ScenarioActionTypes.UpdateScenario))
+        .subscribe((Scenario: UpdateScenario) => {
+          this.layoutStore.dispatch(
+            new UpdateItemAction({
+              item: {
+                value: {
+                  id: Scenario.payload.scenario.scenarioId,
+                  name: Scenario.payload.scenario.name
+                }
+              }
+            })
+          );
+          this.layoutStore.dispatch(new DetailsPersistAction({ item: null }));
+        })
+    );
 
+    // subscription when new scenario is created.
+    this._subscriptions.push(
+      this.update$
+        .pipe(ofType(ScenarioActionTypes.CreateScenario))
+        .subscribe((Scenario: CreateScenario) =>
+          this.fillOrganizer(Scenario.payload.scenario)
+        )
+    );
 
-   public save(event: Event) {
+    // Subscription for update details
+    this._subscriptions.push(
+      this.update$
+        .pipe(ofType(LayoutActionTypes.ItemSelect))
+        .subscribe((selection: ItemSelectAction) => {
+          this.scenarioStore
+            .pipe(select('scenario', 'scenario'))
+            .subscribe((scenarios: Scenario[]) => {
+              const scenario = scenarios.find(
+                x =>
+                  x.scenarioId === selection.payload.item.value.id
+              );
+              this.detailsArea.updateChilds(scenario);
+            });
+        })
+    );
+
+    // Action to do whene there aren't Scenarios after deletion
+    this._subscriptions.push(
+      this.update$
+        .pipe(ofType(ScenarioActionTypes.DeleteScenario))
+        .subscribe(() =>
+          this.scenarioStore
+            .pipe(
+              first(),
+              select('scenario', 'scenario')
+            )
+            .subscribe((Scenarios: Scenario[]) => {
+              if (Scenarios.length === 0) {
+                this.detailsArea.updateChilds(undefined);
+                this.layoutStore.dispatch(
+                  new LandMarkSetAction({ landmark: undefined })
+                );
+              }
+            })
+        )
+    );
+  }
+
+  public save(event: Event) {
     this.detailsArea.save();
   }
 
@@ -125,33 +167,37 @@ export class ScenarioAreaComponent implements OnInit {
 
   createScenario() {
     this.createScenaDialog.showDialog();
-   // this.scenarioStore.dispatch(new CreateScenario({ Scenario: {}}));
+    // this.scenarioStore.dispatch(new CreateScenario({ Scenario: {}}));
   }
 
-  fillOrganizer(Scenario: Scenario){
+  fillOrganizer(scenario: Scenario) {
     this.layoutStore.dispatch(
-      new LayoutStoreActions.AddItemAction({item:
-        {value:{id:Scenario.scenarioId, name: Scenario.name}}})
-        );
+      new LayoutStoreActions.AddItemAction({
+        item: { value: { id: scenario.scenarioId, name: scenario.name } }
+      })
+    );
   }
 
   ngOnInit() {
-    this.layoutStore.dispatch(new LayoutStoreActions.CurrentAreaAction({area: Area.Scenarios}));
+    this.layoutStore.dispatch(
+      new LayoutStoreActions.CurrentAreaAction({ area: Area.Scenarios })
+    );
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  
-  private deleteScenario (node) {
-    
-    this.scenarioStore.pipe(first(), select('scenario', 'scenario'))
-     .subscribe((Scenarios: Scenario[]) => {
-       const Scenario = Scenarios.find(item => item.scenarioId === node.id);
-       this.scenarioStore.dispatch(new DeleteScenario({scenario: Scenario}))
-       this.layoutStore.dispatch(new DeleteItemAction({item: node}));
-     });
+  private deleteScenario(node) {
+    this.scenarioStore
+      .pipe(
+        first(),
+        select('scenario', 'scenario')
+      )
+      .subscribe((Scenarios: Scenario[]) => {
+        const Scenario = Scenarios.find(item => item.scenarioId === node.id);
+        this.scenarioStore.dispatch(new DeleteScenario({ scenario: Scenario }));
+        this.layoutStore.dispatch(new DeleteItemAction({ item: node }));
+      });
   }
-
 }

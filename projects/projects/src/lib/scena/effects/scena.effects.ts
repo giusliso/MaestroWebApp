@@ -4,7 +4,6 @@ import { SceneActionTypes } from '../actions/scena.actions';
 
 @Injectable()
 export class ScenaEffects {
-
   @Effect()
   loadFoos$ = this.actions$.pipe(ofType(SceneActionTypes.CreateScene));
 

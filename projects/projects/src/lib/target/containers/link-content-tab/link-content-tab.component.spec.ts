@@ -8,9 +8,8 @@ describe('LinkContentTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LinkContentTabComponent ]
-    })
-    .compileComponents();
+      declarations: [LinkContentTabComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

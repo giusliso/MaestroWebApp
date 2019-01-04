@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ScenarioSummaryComponent } from '../scenario-summary';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { Scenario } from '../../../../api';
 import { ScenarioState } from '../../reducers';
@@ -12,7 +12,7 @@ import { LeaningPathsTabComponent } from '../scenario-leaning-paths-tab';
   templateUrl: './scenario-details.component.html',
   styleUrls: ['./scenario-details.component.css']
 })
-export class ScenarioDetailsComponent implements OnInit {
+export class ScenarioDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('summaryTab')
   summaryTab: ScenarioSummaryComponent;
 
@@ -24,39 +24,31 @@ export class ScenarioDetailsComponent implements OnInit {
   constructor(
     private layoutState: Store<LayoutState>,
     private ScenarioState: Store<ScenarioState>
-  ) {
-    
- 
-  }
-
+  ) {}
 
   save() {
     let updatedScenario = this.summaryTab.getSummary();
-    if(updatedScenario !== null) {
-
+    if (updatedScenario !== null) {
       updatedScenario.learningPaths = this.learningPathTab.getList();
 
-      this.ScenarioState.dispatch(new UpdateScenario({scenario: updatedScenario}));
+      this.ScenarioState.dispatch(
+        new UpdateScenario({ scenario: updatedScenario })
+      );
     }
   }
 
-  revert () {
+  revert() {
     this.summaryTab.fillSummary(this.currentItem);
     this.learningPathTab.fillTables(this.currentItem);
   }
 
-  updateChilds(scenario){
+  updateChilds(scenario) {
     this.currentItem = scenario;
     this.summaryTab.fillSummary(scenario);
     this.learningPathTab.fillTables(scenario);
   }
 
-  ngOnInit() {
-  
-  }
+  ngOnInit() {}
 
-  ngOnDestroy(){
-
-  }
-
+  ngOnDestroy() {}
 }

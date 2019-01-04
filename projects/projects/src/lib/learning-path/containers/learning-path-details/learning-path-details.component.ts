@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LearningPathSummaryComponent } from '../learning-path-summary';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { LearningPath } from '../../../../api';
 import { LearningPathState } from '../../reducers';
@@ -24,37 +24,30 @@ export class LearningPathDetailsComponent implements OnInit {
   constructor(
     private layoutState: Store<LayoutState>,
     private LearningPathState: Store<LearningPathState>
-  ) {
-    
- 
-  }
-
+  ) {}
 
   save() {
     const updatedLearningPath = this.summaryTab.getSummary();
-    if(updatedLearningPath !== null) {
+    if (updatedLearningPath !== null) {
       updatedLearningPath.targets = this.targetTab.getList();
-      this.LearningPathState.dispatch(new UpdateLearningPath({learningPath: this.summaryTab.getSummary()}));
+      this.LearningPathState.dispatch(
+        new UpdateLearningPath({ learningPath: this.summaryTab.getSummary() })
+      );
     }
   }
 
-  revert () {
+  revert() {
     this.summaryTab.fillSummary(this.currentItem);
     this.targetTab.fillTables(this.currentItem);
   }
 
-  updateChilds(learningPath){
+  updateChilds(learningPath) {
     this.currentItem = learningPath;
     this.summaryTab.fillSummary(learningPath);
     this.targetTab.fillTables(learningPath);
   }
 
-  ngOnInit() {
-  
-  }
+  ngOnInit() {}
 
-  ngOnDestroy(){
-
-  }
-
+  ngOnDestroy() {}
 }

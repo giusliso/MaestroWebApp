@@ -8,7 +8,7 @@ import { EditorModule } from 'src/app/editor/editor.module';
 import { TargetModule } from '../target';
 import { LearningPathCreateDialogComponent } from './containers/learning-path-create-dialog';
 import { StoreModule } from '@ngrx/store';
-import  * as  reducers from './reducers';
+import * as reducers from './reducers';
 import { LinkTargetTabComponent } from './containers/link-target-tab';
 
 @NgModule({
@@ -20,10 +20,11 @@ import { LinkTargetTabComponent } from './containers/link-target-tab';
     StoreModule.forFeature('learning-path', reducers.reducer)
   ],
   declarations: [
-    LearningPathAreaComponent , 
-    LearningPathDetailsComponent, 
-    LearningPathSummaryComponent, 
+    LearningPathAreaComponent,
+    LearningPathDetailsComponent,
+    LearningPathSummaryComponent,
     LearningPathCreateDialogComponent,
-    LinkTargetTabComponent]
+    LinkTargetTabComponent
+  ]
 })
-export class LearningPathModule { }
+export class LearningPathModule {}

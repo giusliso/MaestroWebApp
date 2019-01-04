@@ -4,9 +4,10 @@ import { LearningPathActionTypes } from '../actions/learning-path.actions';
 
 @Injectable()
 export class LearningPathEffects {
-
   @Effect()
-  loadFoos$ = this.actions$.pipe(ofType(LearningPathActionTypes.LoadLearningPaths));
+  loadFoos$ = this.actions$.pipe(
+    ofType(LearningPathActionTypes.LoadLearningPaths)
+  );
 
   constructor(private actions$: Actions) {}
 }

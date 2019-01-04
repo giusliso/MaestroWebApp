@@ -1,20 +1,24 @@
 import { Action } from '@ngrx/store';
-import { LearningPathActions, LearningPathActionTypes } from '../actions/learning-path.actions';
+import {
+  LearningPathActions,
+  LearningPathActionTypes
+} from '../actions/learning-path.actions';
 import { LearningPath } from '../../../api';
 
 export interface LearningPathState {
-  learningPath: LearningPath[],
-  error:boolean
+  learningPath: LearningPath[];
+  error: boolean;
 }
 
 export const initialState: LearningPathState = {
-  learningPath : [],
-  error : false
-
+  learningPath: [],
+  error: false
 };
 
-export function reducer(state = initialState, action: LearningPathActions): LearningPathState {
-
+export function reducer(
+  state = initialState,
+  action: LearningPathActions
+): LearningPathState {
   switch (action.type) {
     case LearningPathActionTypes.LoadLearningPaths:
       return state;
@@ -24,24 +28,27 @@ export function reducer(state = initialState, action: LearningPathActions): Lear
       currentList.push(action.payload.learningPath);
       return {
         ...state,
-        learningPath : currentList
+        learningPath: currentList
       };
-    case LearningPathActionTypes.DeleteLearningPath:  
+    case LearningPathActionTypes.DeleteLearningPath:
       const list = state.learningPath;
-      list.splice(state.learningPath.indexOf(action.payload.learningPath),1);
+      list.splice(state.learningPath.indexOf(action.payload.learningPath), 1);
       return {
         ...state,
-        learningPath : list
-      }
+        learningPath: list
+      };
 
-    case LearningPathActionTypes.UpdateLearningPath:  
-    const updatedList = state.learningPath;
-    const itemToUpdate = state.learningPath.find( x => x.learningPathId === action.payload.learningPath.learningPathId);
-    updatedList[updatedList.indexOf(itemToUpdate)] = action.payload.learningPath;
-    return {
-      ...state,
-      learningPath : updatedList
-    }
+    case LearningPathActionTypes.UpdateLearningPath:
+      const updatedList = state.learningPath;
+      const itemToUpdate = state.learningPath.find(
+        x => x.learningPathId === action.payload.learningPath.learningPathId
+      );
+      updatedList[updatedList.indexOf(itemToUpdate)] =
+        action.payload.learningPath;
+      return {
+        ...state,
+        learningPath: updatedList
+      };
 
     default:
       return state;

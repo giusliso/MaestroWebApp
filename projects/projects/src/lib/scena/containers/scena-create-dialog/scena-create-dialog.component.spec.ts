@@ -8,9 +8,8 @@ describe('ScenaCreateDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScenaCreateDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [ScenaCreateDialogComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

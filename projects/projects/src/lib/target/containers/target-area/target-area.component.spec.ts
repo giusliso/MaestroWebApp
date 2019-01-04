@@ -8,9 +8,8 @@ describe('TargetAreaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TargetAreaComponent ]
-    })
-    .compileComponents();
+      declarations: [TargetAreaComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

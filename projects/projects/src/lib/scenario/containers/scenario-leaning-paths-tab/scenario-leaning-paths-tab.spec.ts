@@ -8,9 +8,8 @@ describe('LeaningPathsTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LeaningPathsTabComponent ]
-    })
-    .compileComponents();
+      declarations: [LeaningPathsTabComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -4,7 +4,7 @@ import { Area } from 'src/app/core';
 export enum LayoutActionTypes {
   DialogOpenedStatus = '[Dialog] Dialog Opened Status',
   OrganizerDataChange = '[Organizer] Data Change',
-  AddItem= '[Organizer] Create',
+  AddItem = '[Organizer] Create',
   DeleteItem = '[Organizer] Delete',
   UpdateItem = '[Organizer] Update',
   ItemSelect = '[Organizer] Select',
@@ -14,7 +14,7 @@ export enum LayoutActionTypes {
   NavigationBack = '[Navigation] Denied Cancellation',
   CurrentArea = '[Navigation] Current Area',
   CurrentScene = '[Navigation] Current Scene',
-  LandMarkSet = '[WorkingArea] Change Scene LandMark',
+  LandMarkSet = '[WorkingArea] Change Scene LandMark'
 }
 
 export class DialogOpenedStatusAction implements Action {

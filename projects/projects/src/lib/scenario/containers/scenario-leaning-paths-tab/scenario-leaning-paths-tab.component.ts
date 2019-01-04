@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Scenario, LearningPath, Target } from '../../../../api';
 import { Store, select } from '@ngrx/store';
-import {State as LayoutState} from 'src/app/store/layout-store/reducer';
+import { State as LayoutState } from 'src/app/store/layout-store/reducer';
 import { DetailsChangeAction } from 'src/app/store/layout-store/actions';
 import { Subscription } from 'rxjs';
 import { Dialog } from 'primeng/dialog';
@@ -12,44 +12,40 @@ import { TargetState } from '../../../target';
   templateUrl: './scenario-leaning-paths-tab.component.html',
   styleUrls: ['./scenario-leaning-paths-tab.component.css']
 })
-
 export class LeaningPathsTabComponent implements OnInit {
+  availables: LearningPath[];
 
-    availables: LearningPath[];
-      
-    currentLinked: LearningPath[];
-    constructor(
-      private targetStore: Store<TargetState>,
-      private layoutStore: Store<LayoutState>){
+  currentLinked: LearningPath[];
+  constructor(
+    private targetStore: Store<TargetState>,
+    private layoutStore: Store<LayoutState>
+  ) {}
+
+  ngOnInit() {}
+
+  onChange() {
+    this.layoutStore.dispatch(new DetailsChangeAction({ item: null }));
+  }
+
+  fillTables(scenario: Scenario) {
+    if (scenario === undefined) {
+      this.availables = [];
+      this.currentLinked = [];
+      return;
     }
+    this.targetStore
+      .pipe(select('learning-path', 'learningPath'))
+      .subscribe((learningPath: LearningPath[]) => {
+        this.currentLinked = scenario.learningPaths;
+        this.availables = learningPath.filter(
+          x => this.currentLinked.indexOf(x) === -1
+        );
+        this.currentLinked = [...this.currentLinked];
+        this.availables = [...this.availables];
+      });
+  }
 
-    ngOnInit() {
-
-    }
-
-    onChange() {
-      this.layoutStore
-       .dispatch(new DetailsChangeAction({item: null}))
-    }
-
-    fillTables(scenario: Scenario) {
-      if(scenario === undefined){
-        this.availables = [];
-        this.currentLinked = [];
-        return;
-      }
-      this.targetStore.pipe(select('learning-path', 'learningPath'))
-       .subscribe((learningPath: LearningPath[]) => {
-           this.currentLinked = scenario.learningPaths;
-           this.availables = learningPath
-             .filter(x => this.currentLinked.indexOf(x) === -1);   
-           this.currentLinked = [...this.currentLinked];
-           this.availables = [...this.availables];      
-       });
-    }
-
-    getList(): LearningPath[] {
-      return this.currentLinked;
-    }
-
+  getList(): LearningPath[] {
+    return this.currentLinked;
+  }
 }

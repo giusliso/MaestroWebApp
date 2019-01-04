@@ -12,9 +12,7 @@ import { FileUpload } from 'primeng/fileupload';
   templateUrl: './scena-create-dialog.component.html',
   styleUrls: ['./scena-create-dialog.component.scss']
 })
-
 export class ScenaCreateDialogComponent implements OnInit {
-
   @ViewChild('errorDialog')
   errorDialog: Dialog;
 
@@ -23,57 +21,54 @@ export class ScenaCreateDialogComponent implements OnInit {
 
   public display: boolean = false;
   summaryForm: FormGroup;
-  TextErrorDialog = "";
+  TextErrorDialog = '';
   displayErrorDialog = false;
-  chooseLabel = "Upload Landmark";
+  chooseLabel = 'Upload Landmark';
 
-  constructor(private sceneStore: Store<SceneState>) { }
+  constructor(private sceneStore: Store<SceneState>) {}
 
   ngOnInit() {
     this.initForm();
   }
 
   showDialog() {
-      this.fileUpload.clear();
-      this.initForm();
-      this.display = true;
+    this.fileUpload.clear();
+    this.initForm();
+    this.display = true;
   }
 
   onSubmit() {
-    if(this.summaryForm.valid && this.fileUpload.files.length > 0){
+    if (this.summaryForm.valid && this.fileUpload.files.length > 0) {
       const scene: Scene = {
         name: this.summaryForm.controls['name'].value,
         description: this.summaryForm.controls['description'].value,
         landmark: this.fileUpload.files[0]
       };
-      this.sceneStore.dispatch(new CreateScene({ scene: scene}));
+      this.sceneStore.dispatch(new CreateScene({ scene: scene }));
       this.display = false;
-    }
-    else {
+    } else {
       let wrongFields = [];
 
-      if(this.fileUpload.files.length === 0) {
+      if (this.fileUpload.files.length === 0) {
         wrongFields.push('landmark');
       }
-      Object.keys(this.summaryForm.controls).forEach(
-        key => {
-          if(this.summaryForm.controls[key].status === 'INVALID'){
-            wrongFields.push(key);
-          }
+      Object.keys(this.summaryForm.controls).forEach(key => {
+        if (this.summaryForm.controls[key].status === 'INVALID') {
+          wrongFields.push(key);
         }
-      )
+      });
       if (wrongFields.length > 1) {
-        this.TextErrorDialog = "The following fields are required : \n";
-        wrongFields.forEach( item => this.TextErrorDialog += item + "\n");
-      }
-      else {
-        this.TextErrorDialog = "The following field is required : " + wrongFields[0];
+        this.TextErrorDialog = 'The following fields are required : \n';
+        wrongFields.forEach(item => (this.TextErrorDialog += item + '\n'));
+      } else {
+        this.TextErrorDialog =
+          'The following field is required : ' + wrongFields[0];
       }
       this.displayErrorDialog = true;
     }
   }
 
-  private initForm(){
+  private initForm() {
     this.summaryForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -84,12 +79,11 @@ export class ScenaCreateDialogComponent implements OnInit {
     });
   }
 
-  private readFile(file: File){
-    let fileReader = new FileReader();
-    fileReader.onload = (e) => {
+  private readFile(file: File) {
+    const fileReader = new FileReader();
+    fileReader.onload = e => {
       console.log(fileReader.result);
-    }
+    };
     fileReader.readAsText(file);
   }
-
 }
